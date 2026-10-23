@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f2e9">
+<title>Eternia — tri smjera dizajna</title>
+<style>
+:root{font-family:Arial,Helvetica,sans-serif;color:#25312c;background:#f2f0e9;font-size:18px;line-height:1.55}
+*{box-sizing:border-box}
+body{margin:0}
+button,input,textarea{font:inherit}
+button,a,input,textarea{outline-offset:4px}
+:focus-visible{outline:3px solid #225f8b;outline-offset:3px}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.topbar{background:#202b27;color:#fff;padding:14px 18px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.brand{font:700 1.3rem Georgia,serif;letter-spacing:.04em}
+.topbar small{display:block;color:#d7e0d9;font-size:.8rem}
+.controls{max-width:1180px;margin:auto;padding:20px 18px 8px}
+.controls h1{font:700 clamp(1.5rem,4vw,2.3rem) Georgia,serif;margin:0 0 6px}
+.controls p{margin:0 0 16px;max-width:800px}
+.switches{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.switches button,.view-switch button{border:2px solid #66756d;background:#fff;color:#25312c;border-radius:10px;padding:10px 14px;min-height:48px;font-weight:700}
+.switches button[aria-pressed="true"],.view-switch button[aria-pressed="true"]{background:#253b32;color:#fff;border-color:#253b32}
+.stage{max-width:1180px;margin:auto;padding:10px 18px 44px}
+.direction-note{padding:15px 17px;border-radius:12px;background:#fff;border:1px solid #d4d7ce;margin:8px 0 18px}
+.direction-note strong{display:block;margin-bottom:3px}
+.view-switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.prototype-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+.phone{width:100%;max-width:440px;margin:0 auto;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--paper);box-shadow:0 10px 30px #17241c12;color:var(--ink)}
+.phone-header{padding:18px 20px 12px;background:var(--header);border-bottom:1px solid var(--line)}
+.wordmark{font:700 1.1rem Georgia,serif;letter-spacing:.08em}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin:12px 0 5px}
+h2,h3{font-family:Georgia,'Times New Roman',serif;line-height:1.2}
+h2{font-size:1.75rem;margin:0 0 8px}
+h3{font-size:1.2rem;margin:0 0 10px}
+p{margin:0 0 12px}
+.page-content{padding:18px 20px 24px}
+.hero{border-radius:16px;min-height:150px;display:flex;align-items:flex-end;padding:16px;color:#fff;background:linear-gradient(0deg,#15231dc9,transparent 75%),linear-gradient(135deg,#7c8b7c,#c9c8b4 52%,#66766c);margin-bottom:18px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 80% 10%,#ffffff3d,transparent 38%);pointer-events:none}
+.hero span{position:relative;font-size:.9rem}
+.portrait{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font:2.1rem Georgia,serif;margin:0 auto 14px;border:3px solid var(--paper)}
+.person{text-align:center;padding:10px 0 16px}
+.dates{color:var(--muted);font-weight:600}
+.rule{height:1px;background:var(--line);margin:18px 0}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.action{min-height:68px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:10px 8px;font-weight:700}
+.action span{display:block;font-size:1.4rem;margin-bottom:2px}
+.primary{width:100%;min-height:52px;border:2px solid var(--accent);border-radius:12px;background:var(--accent);color:#fff;padding:11px 14px;font-weight:700}
+.secondary{min-height:48px;border:2px solid var(--accent);border-radius:10px;background:transparent;color:var(--accent);padding:9px 12px;font-weight:700}
+.soft-card{background:var(--surface);border:1px solid var(--line);padding:14px;border-radius:14px;margin:12px 0}
+.story{border-left:4px solid var(--accent);padding:4px 0 4px 13px;margin:14px 0}
+.story small{display:block;color:var(--muted);margin-top:5px}
+.family-links{display:flex;flex-direction:column;gap:8px}
+.family-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);background:var(--surface);font-weight:700}
+.family-link span{font-size:.82rem;color:var(--muted);font-weight:400}
+.loc-card{display:flex;gap:12px;align-items:flex-start}
+.loc-icon{font-size:1.6rem}
+.qr-row{display:flex;gap:14px;align-items:center}
+.qr{width:94px;height:94px;flex:none;border:7px solid #fff;outline:1px solid #a6aaa2;background-color:#fff;background-image:repeating-conic-gradient(#202b27 0 25%,#fff 0 50%);background-size:14px 14px;position:relative}
+.qr:after{content:"";position:absolute;inset:29px;background:#fff;border:5px solid #202b27}
+.small-label{font-size:.84rem;color:var(--muted)}
+.form-field{display:block;margin:12px 0;font-weight:700}
+.form-field input,.form-field textarea{display:block;width:100%;margin-top:6px;border:2px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);padding:10px}
+.form-field textarea{min-height:94px;resize:vertical}
+.notice{font-size:.86rem;color:var(--muted);margin-top:10px}
+.toast{margin-top:12px;padding:10px;border-radius:9px;background:var(--accent-soft);color:var(--ink);display:none}
+.phone-footer{padding:14px 20px;background:var(--header);border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+[hidden]{display:none!important}
+.garden{--paper:#f7f4ec;--header:#ebe9dc;--surface:#eeefe5;--ink:#26382f;--muted:#566b5d;--accent:#426a50;--accent-soft:#dce6d8;--line:#cbd4c7}
+.timeless{--paper:#f8f7f4;--header:#eeece7;--surface:#f0efeb;--ink:#282a29;--muted:#555a57;--accent:#69553d;--accent-soft:#e7dfd1;--line:#d3d0c8}
+.living{--paper:#f3f7f8;--header:#e6eef0;--surface:#eaf1f2;--ink:#203741;--muted:#4c6570;--accent:#356779;--accent-soft:#d9e9ed;--line:#c5d8de}
+.design-grid{display:grid;grid-template-columns:1fr;gap:28px}
+.design-card{border:1px solid #d2d5ce;background:#fff;border-radius:18px;padding:14px}
+.design-card h2{font-size:1.4rem;margin:2px 2px 6px}
+.design-card .subtitle{color:#526058;font-size:.9rem;margin:0 2px 14px}
+.mini-pair{display:grid;grid-template-columns:1fr;gap:12px}
+.mini-label{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#59665f;margin:0 0 6px 4px}
+.mini-screen{border-radius:14px;border:1px solid #d2d5ce;overflow:hidden}
+.mini-screen .mini-head{padding:12px;background:var(--header);font-weight:700}
+.mini-screen .mini-body{padding:14px;background:var(--paper);color:var(--ink)}
+.mini-photo{height:74px;border-radius:9px;background:linear-gradient(120deg,#9cae9b,#e0d9c7,#7b8f83);margin-bottom:12px}
+.mini-body h3{font-size:1.1rem;margin:0 0 5px}
+.mini-button{display:block;border-radius:8px;padding:8px 10px;margin-top:10px;text-align:center;border:1px solid var(--accent);color:var(--accent);font-weight:700;font-size:.85rem}
+@media(min-width:780px){.prototype-wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.phone{max-width:none}.design-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.mini-pair{grid-template-columns:1fr}.page-content{padding:20px 24px 28px}}
+@media(min-width:1080px){.design-card{padding:18px}.mini-pair{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar"><div><div class="brand">ETERNIA</div><small>Digitalno mjesto sjećanja</small></div><div><small>Interaktivni koncepti · Hrvatski</small></div></header>
+<section class="controls">
+<h1>Tri smjera. Jedno dostojanstvo.</h1>
+<p>Usporedite tri vizualna smjera za <strong>MS — Memorijalnu stranicu</strong> i <strong>GS — Stranicu grobnog mjesta</strong>. Odaberite smjer, zatim pregledajte oba povezana zaslona. Primjer osobe i grobnog mjesta je izmišljen.</p>
+<div class="switches" role="group" aria-label="Odabir dizajna">
+<button type="button" data-direction="garden" aria-pressed="true">1. Mirni vrt</button>
+<button type="button" data-direction="timeless" aria-pressed="false">2. Bezvremenski spomen</button>
+<button type="button" data-direction="living" aria-pressed="false">3. Živo sjećanje</button>
+</div>
+<div class="direction-note" id="direction-note" aria-live="polite"><strong>Mirni vrt</strong><span>Topla bjelokost, prigušena kadulja i nježni botanički tonovi. Najmekši i najprisniji smjer.</span></div>
+<div class="view-switch" role="group" aria-label="Odabir stranice">
+<button type="button" data-view="ms" aria-pressed="true">MS · Memorijalna stranica</button>
+<button type="button" data-view="gs" aria-pressed="false">GS · Stranica grobnog mjesta</button>
+</div>
+</section>
+<main class="stage">
+<div class="prototype-wrap">
+<section class="phone garden" id="phone-ms" aria-label="Prototip memorijalne stranice">
+<div class="phone-header"><div class="wordmark">ETERNIA</div><div class="eyebrow">Memorijalna stranica</div></div>
+<div class="page-content">
+<div class="person"><div class="portrait" aria-hidden="true">M</div><h2>Marija Kovač</h2><div class="dates">1942. — 2021.</div><p style="margin-top:10px">Voljena majka, baka i prijateljica.</p></div>
+<div class="hero" role="img" aria-label="Mirni vrt u mekom svjetlu"><span>Uspomene koje ostaju s nama</span></div>
+<p>Sačuvali smo ovo mjesto za priče, fotografije i trenutke koji nas i dalje povezuju.</p>
+<div class="action-grid">
+<button class="action" type="button" data-gift="Svijeća"><span aria-hidden="true">🕯</span>Upali svijeću</button>
+<button class="action" type="button" data-gift="Cvijet"><span aria-hidden="true">🌼</span>Ostavi cvijet</button>
+</div>
+<div class="toast" aria-live="polite"></div>
+<div class="rule"></div>
+<h3>Zid sjećanja</h3>
+<div class="story">„Uvijek je znala okupiti sve oko stola. Njezina toplina ostaje s nama.”<small>Ana, kći · 12. svibnja 2024.</small></div>
+<div class="story">„Naučila me da male stvari čine život velikim.”<small>Ivan, unuk · 3. lipnja 2023.</small></div>
+<button class="primary" type="button" data-open="memory-form">Podijeli uspomenu</button>
+<form class="soft-card" data-form="memory-form" hidden>
+<h3>Dodaj uspomenu</h3>
+<label class="form-field">Vaše ime<input name="name" autocomplete="name" placeholder="Kako da vas potpišemo?" required></label>
+<label class="form-field">Uspomena<textarea name="story" placeholder="Podijelite priču ili sjećanje…" required></textarea></label>
+<button class="primary" type="submit">Prikaži uspomenu</button>
+<p class="notice">Demo prikaz: sadržaj se dodaje samo u ovaj preglednik.</p>
+</form>
+<div class="rule"></div>
+<h3>Obiteljske uspomene</h3>
+<div class="family-links">
+<a class="family-link" href="#ivan" data-related="gs">Ivan Kovač <span>Unuk · pogledaj obitelj</span></a>
+<a class="family-link" href="#gs" data-related="gs">Grobno mjesto obitelji Kovač <span>Podaci i lokacija →</span></a>
+</div>
+</div><footer class="phone-footer">S poštovanjem čuvamo uspomenu na Mariju.</footer>
+</section>
+
+<section class="phone garden" id="phone-gs" aria-label="Prototip stranice grobnog mjesta" hidden>
+<div class="phone-header"><div class="wordmark">ETERNIA</div><div class="eyebrow">Stranica grobnog mjesta</div></div>
+<div class="page-content">
+<div class="hero" role="img" aria-label="Kamen i zelenilo na mirnom groblju"><span>Obitelj Kovač</span></div>
+<h2>Grobno mjesto obitelji Kovač</h2>
+<p class="dates">Gradsko groblje · Osijek</p>
+<div class="soft-card loc-card"><div class="loc-icon" aria-hidden="true">⌖</div><div><strong>Lokacija grobnog mjesta</strong><p>Polje 12 · Red 4 · Grob 18</p><button type="button" class="secondary" data-map>Prikaži upute</button><p class="notice" data-map-note hidden>Primjer lokacije — u stvarnoj usluzi ovdje se prikazuju potvrđene upute.</p></div></div>
+<div class="rule"></div>
+<h3>Ovdje počivaju</h3>
+<div class="family-links">
+<a class="family-link" href="#marija" data-related="ms">Marija Kovač <span>1942. — 2021. →</span></a>
+<a class="family-link" href="#ante" data-related="ms">Ante Kovač <span>1938. — 2016. →</span></a>
+</div>
+<div class="rule"></div>
+<h3>Otvorite ovo mjesto sjećanja</h3>
+<div class="soft-card qr-row"><div class="qr" role="img" aria-label="Ilustracija QR koda, nije skenabilna"></div><div><strong>QR poveznica</strong><p class="small-label">Skeniranjem koda otvara se ova stranica grobnog mjesta.</p></div></div>
+<button class="primary" type="button" data-related="ms">Otvori memorijal Marije</button>
+<p class="notice">QR kod je u ovom prototipu ilustrativan, nije skenabilan.</p>
+</div><footer class="phone-footer">Mjesto susreta s obiteljskim uspomenama.</footer>
+</section>
+</div>
+</main>
+<section class="controls">
+<h2 style="font-size:1.5rem">Brzi pregled svih triju smjerova</h2>
+<p>Svaki smjer koristi isti MVP sadržaj; razlikuju se tipografija, ton boja i način na koji se stranica osjeća.</p>
+<div class="design-grid">
+<article class="design-card">
+<h2>1. Mirni vrt</h2><p class="subtitle">Toplo, prirodno, osobno</p>
+<div class="mini-pair">
+<div><div class="mini-label">MS · Memorijal</div><div class="mini-screen garden"><div class="mini-head">ETERNIA · Sjećanje</div><div class="mini-body"><div class="mini-photo"></div><h3>Marija Kovač</h3><p>1942. — 2021.</p><div class="mini-button">🕯 Upali svijeću</div></div></div></div>
+<div><div class="mini-label">GS · Grobno mjesto</div><div class="mini-screen garden"><div class="mini-head">ETERNIA · Obitelj</div><div class="mini-body"><div class="mini-photo"></div><h3>Grobno mjesto Kovač</h3><p>Gradsko groblje · Osijek</p><div class="mini-button">Pogledaj memorijale</div></div></div></div>
+</div></article>
+<article class="design-card">
+<h2>2. Bezvremenski spomen</h2><p class="subtitle">Kamen, mirna geometrija, suzdržanost</p>
+<div class="mini-pair">
+<div><div class="mini-label">MS · Memorijal</div><div class="mini-screen timeless"><div class="mini-head">ETERNIA · Uspomena</div><div class="mini-body"><div class="mini-photo"></div><h3>Marija Kovač</h3><p>1942. — 2021.</p><div class="mini-button">🕯 Upali svijeću</div></div></div></div>
+<div><div class="mini-label">GS · Grobno mjesto</div><div class="mini-screen timeless"><div class="mini-head">ETERNIA · Lokacija</div><div class="mini-body"><div class="mini-photo"></div><h3>Grobno mjesto Kovač</h3><p>Gradsko groblje · Osijek</p><div class="mini-button">Pogledaj memorijale</div></div></div></div>
+</div></article>
+<article class="design-card">
+<h2>3. Živo sjećanje</h2><p class="subtitle">Povezanost, čitljivost, obiteljske priče</p>
+<div class="mini-pair">
+<div><div class="mini-label">MS · Memorijal</div><div class="mini-screen living"><div class="mini-head">ETERNIA · Uspomene</div><div class="mini-body"><div class="mini-photo"></div><h3>Marija Kovač</h3><p>1942. — 2021.</p><div class="mini-button">🕯 Upali svijeću</div></div></div></div>
+<div><div class="mini-label">GS · Grobno mjesto</div><div class="mini-screen living"><div class="mini-head">ETERNIA · Obitelj</div><div class="mini-body"><div class="mini-photo"></div><h3>Grobno mjesto Kovač</h3><p>Gradsko groblje · Osijek</p><div class="mini-button">Pogledaj memorijale</div></div></div></div>
+</div></article>
+</div>
+</section>
+<footer class="controls"><p class="notice">Dizajnerski prototip, a ne produkcijska usluga. Sve su osobe i lokacijski podaci izmišljeni. Interakcije (svijeća, cvijet i dodavanje uspomene) prikazuju lokalnu demonstraciju; nema prijave, stvarnog objavljivanja ni funkcionalnog QR koda.</p></footer>
+<script>
+(() => {
+const directions = {
+ garden: {name:'Mirni vrt', desc:'Topla bjelokost, prigušena kadulja i nježni botanički tonovi. Najmekši i najprisniji smjer.'},
+ timeless: {name:'Bezvremenski spomen', desc:'Kamen, topla siva i suptilni brončani detalji. Miran, arhitektonski i suzdržan smjer.'},
+ living: {name:'Živo sjećanje', desc:'Plavo-sivi tonovi, prozračne kartice i jasne veze među članovima obitelji. Smjer usmjeren na čitljivost i povezanost.'}
+};
+let direction = 'garden', view = 'ms';
+const note = document.getElementById('direction-note');
+function apply() {
+ document.querySelectorAll('.phone').forEach(el => {el.classList.remove('garden','timeless','living');el.classList.add(direction)});
+ document.querySelectorAll('[data-direction]').forEach(b => b.setAttribute('aria-pressed',String(b.dataset.direction===direction)));
+ document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed',String(b.dataset.view===view)));
+ document.getElementById('phone-ms').hidden = view !== 'ms';
+ document.getElementById('phone-gs').hidden = view !== 'gs';
+ note.innerHTML = '<strong>'+directions[direction].name+'</strong><span>'+directions[direction].desc+'</span>';
+}
+document.querySelectorAll('[data-direction]').forEach(b => b.addEventListener('click',()=>{direction=b.dataset.direction;apply()}));
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click',()=>{view=b.dataset.view;apply()}));
+document.querySelectorAll('[data-gift]').forEach(b => b.addEventListener('click',()=>{
+ const toast=b.closest('.phone').querySelector('.toast');
+ toast.textContent = b.dataset.gift==='Svijeća' ? '🕯 Svijeća je upaljena u ovom prikazu. Hvala što čuvate uspomenu.' : '🌼 Cvijet je ostavljen u ovom prikazu. Hvala što čuvate uspomenu.';
+ toast.style.display='block';
+}));
+document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click',()=>{
+ const form=document.querySelector('[data-form="'+b.dataset.open+'"]');form.hidden=!form.hidden;
+ if(!form.hidden) form.querySelector('input').focus();
+}));
+document.querySelectorAll('[data-form]').forEach(form => form.addEventListener('submit',e=>{
+ e.preventDefault();
+ const name=form.elements.name.value.trim(), story=form.elements.story.value.trim();
+ if(!name||!story)return;
+ const article=document.createElement('div');article.className='story';
+ const quote=document.createElement('span');quote.textContent='„'+story+'”';
+ const small=document.createElement('small');small.textContent=name+' · upravo sada (demo)';
+ article.append(quote,small);form.parentElement.insertBefore(article,form);
+ form.reset();form.hidden=true;
+ const btn=form.parentElement.querySelector('[data-open="memory-form"]');btn.textContent='Uspomena dodana u ovaj prikaz';
+}));
+document.querySelectorAll('[data-map]').forEach(b=>b.addEventListener('click',()=>{
+ const n=b.parentElement.querySelector('[data-map-note]');n.hidden=!n.hidden;
+}));
+document.querySelectorAll('[data-related]').forEach(el=>el.addEventListener('click',e=>{
+ e.preventDefault();view=el.dataset.related;apply();document.querySelector('.stage').scrollIntoView({behavior:'smooth',block:'start'});
+}));
+apply();
+})();
+</script>
+</body>
+</html>
