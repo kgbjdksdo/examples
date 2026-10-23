@@ -1,0 +1,1334 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#02070D">
+<title>Eternia · noćni dizajn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<link rel="preload" as="image" href="img/svijeca-1170.webp" media="(max-width: 959px)">
+<link rel="preload" as="image" href="img/svijeca-siroka-1920.webp" media="(min-width: 960px)">
+<style>
+/* Noćni dizajn: tokeni iz dizajn paketa (tokens.css), tekst povećan na >= 18 px za starije korisnike.
+   Mobitel: jedan stupac preko pozadine sa svijećom. Računalo (>= 960 px): lijevo scena, desno aplikacija. */
+:root {
+  --bg: #02070D;
+  --bg-top: #030A16;
+  --surface: rgba(10, 15, 21, .78);
+  --surface-solid: #0B1118;
+  --soft: rgba(255, 255, 255, .05);
+  --field: rgba(10, 13, 18, .82);
+  --line: rgba(232, 214, 190, .22);
+  --line-strong: rgba(232, 214, 190, .38);
+  --line-gold: rgba(216, 186, 140, .45);
+  --gold-50: #F4DBA6;
+  --gold-300: #E6C794;
+  --gold-500: #D9AE6B;
+  --gold-700: #A8773D;
+  --gold-text: linear-gradient(160deg, #F4DBA6 0%, #D9AE6B 55%, #A8773D 100%);
+  --gold-btn: linear-gradient(90deg, #C98F45 0%, #BC843D 45%, #D49F55 80%, #E4B66C 100%);
+  --gold-sheen: linear-gradient(180deg, rgba(255,243,214,.45) 0%, rgba(255,243,214,.05) 45%, rgba(58,34,8,0) 75%, rgba(58,34,8,.35) 100%);
+  --ink: #ECEAE6;
+  --muted: #BDBAB4;
+  --on-gold: #24180B;
+  --ok: #8CC9A0;
+  --err: #F0A08F;
+  --rel: var(--gold-300);   /* naglasak vjerskog dizajna, postavlja se kroz JS */
+  --relh: transparent;
+  --brand: "Cormorant Garamond", Georgia, serif; --display: "EB Garamond", Georgia, serif;
+  --script: "Allura", "Segoe Script", cursive;
+  --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+  --col: 600px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 18px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; }
+button, input, select, textarea { font-family: var(--body); }
+:focus-visible { outline: 2.5px solid var(--gold-300); outline-offset: 3px; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- pozadina ---------- */
+.bgimg { position: fixed; inset: 0; z-index: 0; background: var(--bg) url("img/svijeca-1170.webp") center top / 100% auto no-repeat; transition: opacity .2s ease; pointer-events: none; }
+.bgimg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(2,7,13,.15) 0%, rgba(2,7,13,0) 30%, rgba(2,7,13,.25) 60%, var(--bg) 100%); }
+body:not([data-view="home"]) .bgimg { opacity: .28; }
+@media (max-width: 959px) and (min-width: 600px) { .bgimg { background-size: 600px auto; } }
+
+/* ---------- scena za računalo ---------- */
+.scene { display: none; }
+@media (min-width: 960px) {
+  .scene { display: grid; position: fixed; inset: 0 auto 0 0; width: calc(100vw - var(--col)); z-index: 0; background: var(--bg) url("img/svijeca-siroka-1920.webp") center 62% / cover no-repeat; grid-template-rows: auto 1fr; padding: clamp(28px, 5vh, 56px) clamp(28px, 4vw, 64px); }
+  .scene::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(2,7,13,.72) 0%, rgba(2,7,13,.1) 34%, rgba(2,7,13,0) 60%, rgba(2,7,13,.55) 100%), linear-gradient(90deg, rgba(2,7,13,0) 70%, var(--bg) 100%); }
+  .scene > * { position: relative; }
+  .scene .lockup { justify-self: center; }
+  .scene .lockup .znak { width: clamp(84px, 9vw, 128px); }
+  .scene .lockup .wordmark { font-size: clamp(34px, 3.4vw, 52px); }
+  .scene .scene-txt { align-self: start; max-width: 30ch; margin-top: 13vh; }
+  .scene .script { font-size: clamp(48px, 4.6vw, 72px); }
+  .bgimg { display: none; }
+  .app { margin-left: auto !important; margin-right: 0 !important; }
+}
+
+/* ---------- logotip ---------- */
+.lockup { display: grid; justify-items: center; gap: 4px; text-align: center; }
+.znak { width: 76px; height: auto; display: block; filter: drop-shadow(0 0 18px rgba(242, 184, 102, .28)); }
+.wordmark { font: 600 36px/1 var(--brand); letter-spacing: .42em; margin-right: -.42em; background: var(--gold-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tagline { margin: 6px 0 0; font-size: 18px; color: var(--ink); text-shadow: 0 1px 12px rgba(0,0,0,.8); }
+.script { font: 400 56px/1.02 var(--script); color: var(--gold-300); margin: 0; text-shadow: 0 2px 16px rgba(0,0,0,.6); }
+.hdiv { display: flex; align-items: center; justify-content: center; gap: 12px; color: var(--gold-500); }
+.hdiv::before, .hdiv::after { content: ""; width: 64px; border-top: 1px solid var(--line-gold); }
+.hdiv svg { width: 20px; height: 20px; }
+
+/* ---------- okvir aplikacije ---------- */
+.app { position: relative; z-index: 1; max-width: var(--col); margin: 0 auto; min-height: 100svh; display: flex; flex-direction: column; }
+@media (min-width: 960px) { .app { background: linear-gradient(180deg, var(--bg-top), var(--bg)); box-shadow: -1px 0 0 var(--line); } body:not([data-view="home"]) .app, body[data-view="home"] .app { min-height: 100vh; } }
+.bar {
+  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 64px;
+  padding: calc(8px + env(safe-area-inset-top, 0px)) max(18px, env(safe-area-inset-right, 0px)) 8px max(18px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(180deg, rgba(2,7,13,.92), rgba(2,7,13,.78)); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+}
+body[data-view="home"] .bar { background: transparent; border-bottom-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; position: absolute; left: 0; right: 0; }
+.themed .bar { box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--relh) 70%, transparent); }
+.brand { display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; color: var(--ink); min-height: 48px; }
+.brand .znak { width: 38px; filter: none; }
+.brand .wm { display: grid; line-height: 1.1; }
+.brand b { font: 600 22px/1 var(--brand); letter-spacing: .3em; background: var(--gold-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.brand small { display: flex; align-items: center; gap: 5px; font-size: 14px; color: var(--muted); margin-top: 3px; }
+.brand small svg { width: 14px; height: 14px; flex: none; }
+.barr { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.chipl { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 14px; background: var(--soft); border: 1px solid rgba(255,255,255,.1); color: var(--ink); font: 600 16px var(--body); }
+.chipl svg { width: 14px; height: 14px; color: var(--gold-300); }
+.iconbtn { width: 48px; height: 48px; display: grid; place-items: center; background: var(--soft); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; color: var(--gold-300); cursor: pointer; }
+.iconbtn svg { width: 24px; height: 24px; }
+
+main { flex: 1; display: grid; align-content: start; gap: 18px; padding: 18px max(20px, env(safe-area-inset-right, 0px)) 28px max(20px, env(safe-area-inset-left, 0px)); }
+footer.foot { position: relative; z-index: 1; display: grid; gap: 10px; justify-items: center; padding: 18px 16px calc(22px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 16px; }
+footer.foot nav { display: flex; gap: 0; flex-wrap: wrap; justify-content: center; }
+footer.foot nav button { background: none; border: 0; color: var(--muted); font: 16px var(--body); cursor: pointer; padding: 10px 14px; min-height: 44px; }
+footer.foot nav button + button { border-left: 1px solid var(--line); }
+.idiv { display: flex; align-items: center; gap: 14px; width: min(100%, 360px); color: var(--gold-500); }
+.idiv::before, .idiv::after { content: ""; flex: 1; border-top: 1px solid var(--line-gold); }
+.idiv svg { width: 34px; height: 18px; }
+
+/* ---------- naslovna ---------- */
+main.homeview { padding-top: calc(40px + env(safe-area-inset-top, 0px)); gap: 26px; }
+.hero { display: grid; gap: 0; }
+.hero .lockup { margin-top: 2px; }
+.hero-txt { width: min(52%, 290px); justify-self: start; display: grid; justify-items: center; gap: 10px; text-align: center; margin-top: clamp(14px, 5vw, 40px); }
+.hero-txt .script { font-size: clamp(44px, 12.5vw, 60px); }
+.hero-txt .lead { margin: 0; font-size: 18px; line-height: 1.45; text-shadow: 0 1px 10px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.8); }
+.hero-act { display: grid; gap: 14px; margin-top: clamp(90px, 42vw, 260px); }
+.hero .dsk { display: none; }
+.lead2 { margin: 0; font-size: 18px; text-align: center; color: var(--ink); }
+.hero-act .login { text-align: center; color: var(--ink); font-size: 18px; margin: 4px 0 0; }
+@media (min-width: 960px) {
+  .hero .mob, .hero .mobi { display: none; }
+  .hero .dsk { display: block; }
+  .hero .h { display: block !important; font-size: 44px; text-align: center; }
+  .hero-txt .lead { font-size: 19px; }
+  .hero-txt { width: auto; justify-self: stretch; margin-top: 8px; }
+  .hero-act { margin-top: 10px; }
+  main.homeview { padding-top: 96px; }
+}
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stats .st { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 10px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.stats svg { width: 34px; height: 34px; flex: none; }
+.stats span { display: grid; line-height: 1.2; text-align: left; }
+.stats b { white-space: nowrap; font-size: 19px; font-variant-numeric: tabular-nums; color: var(--gold-50); }
+.stats small { color: var(--muted); font-size: 15px; }
+.card-s { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 20px; display: grid; gap: 14px; }
+h2 { font: 600 26px/1.15 var(--display); color: var(--gold-50); margin: 0; letter-spacing: .01em; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); position: relative; }
+.steps::before { content: ""; position: absolute; top: 22px; left: 16.6%; right: 16.6%; border-top: 1px solid var(--line-gold); }
+.steps li { display: grid; justify-items: center; gap: 8px; text-align: center; position: relative; }
+.steps b { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); border: 1px solid var(--gold-500); color: var(--gold-300); font: 600 22px var(--display); }
+.steps span { font-size: 16px; color: var(--muted); line-height: 1.3; max-width: 12ch; }
+.can { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.can div { display: flex; align-items: center; gap: 12px; }
+.can figure { margin: 0; width: 52px; height: 52px; flex: none; border-radius: 16px; background: var(--soft); border: 1px solid var(--line); display: grid; place-items: center; color: var(--gold-300); }
+.can svg { width: 30px; height: 30px; }
+.can span { font-size: 17px; line-height: 1.25; }
+.sig { text-align: center; font-size: 44px; color: var(--gold-300); opacity: .9; }
+
+/* ---------- gumbi ---------- */
+.cta { appearance: none; border: 1px solid rgba(247,223,174,.55); cursor: pointer; width: 100%; min-height: 56px; border-radius: 999px; padding: 12px 22px; background: var(--gold-sheen), var(--gold-btn); color: var(--on-gold); font: 700 19px/1.2 var(--body); display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 6px 24px rgba(201,143,69,.25); text-wrap: balance; }
+.cta .arr { margin-left: auto; font-size: 22px; line-height: 1; }
+.cta:hover { filter: brightness(1.06); }
+.cta:disabled { opacity: .38; cursor: not-allowed; filter: grayscale(.4); box-shadow: none; }
+.cta.th { }
+.cta.light, .ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong); box-shadow: none; font-weight: 600; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.cta.light svg { width: 22px; height: 22px; flex: none; color: var(--gold-300); }
+.cta.light:hover, .ghost:hover { border-color: var(--gold-500); filter: none; }
+.ghost { appearance: none; cursor: pointer; width: 100%; min-height: 54px; border-radius: 999px; padding: 12px 20px; font: 600 18px/1.2 var(--body); }
+.linkbtn { background: none; border: 0; padding: 4px 2px; font: 700 18px var(--body); color: var(--gold-300); cursor: pointer; min-height: 44px; }
+.back { justify-self: start; background: none; border: 0; padding: 8px 0; min-height: 44px; color: var(--gold-300); font: 600 17px var(--body); cursor: pointer; }
+
+/* ---------- pretraga i rezultati ---------- */
+.results { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.results li button { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; color: var(--ink); font: inherit; min-height: 64px; }
+.results li button:hover { border-color: var(--line-gold); }
+.av { display: flex; flex: none; }
+.av i { width: 40px; height: 40px; border-radius: 50%; background: #121A24; border: 2px solid var(--bg); display: grid; place-items: center; font: 700 14px var(--body); color: var(--gold-300); font-style: normal; }
+.av > * + * { margin-left: -14px; }
+.rmeta { min-width: 0; flex: 1; }
+.rmeta b { display: block; font-weight: 700; }
+.rmeta small { color: var(--muted); font-size: 15px; }
+.tag { flex: none; font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; color: #fff; border: 1px solid rgba(255,255,255,.18); }
+.empty { color: var(--muted); font-size: 17px; margin: 6px 4px 0; }
+
+/* ---------- tok izrade ---------- */
+.prog { display: grid; grid-template-columns: repeat(4, 1fr); position: relative; }
+.prog::before { content: ""; position: absolute; top: 7px; left: 12.5%; right: 12.5%; border-top: 1px solid var(--line); }
+.prog .fill { position: absolute; top: 7px; left: 12.5%; border-top: 1.5px solid var(--gold-500); }
+.prog div { display: grid; justify-items: center; gap: 4px; position: relative; font-size: 15px; color: var(--muted); }
+.prog i { width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--line-strong); }
+.prog .on i { background: var(--gold-500); border-color: var(--gold-300); box-shadow: 0 0 10px rgba(242,184,102,.5); }
+.prog .cur { color: var(--gold-50); font-weight: 700; }
+.h { font: 600 32px/1.1 var(--display); color: var(--gold-50); margin: 0; text-wrap: balance; }
+.note { color: var(--muted); font-size: 17px; margin: 0; }
+.fld { display: grid; gap: 6px; font-size: 16px; font-weight: 600; color: var(--muted); min-width: 0; }
+.fld input, .fld select, .fld textarea, .sheet input, .sheet select, .sheet textarea {
+  width: 100%; min-height: 54px; border: 1px solid var(--line-strong); background: var(--field); color: var(--ink); border-radius: 16px; padding: 12px 16px; font: 18px var(--body);
+}
+.fld input::placeholder, .fld textarea::placeholder, .sheet textarea::placeholder, .sheet input::placeholder { color: #8E8B86; }
+.fld input:focus, .fld select:focus, .fld textarea:focus, .sheet textarea:focus, .sheet select:focus, .sheet input:focus { outline: none; border-color: var(--gold-500); box-shadow: 0 0 0 3px rgba(217,174,107,.18); }
+.fld select, .sheet select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E6C794' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 20px; padding-right: 44px; }
+.fld select option, .sheet select option { background: #0B1118; color: var(--ink); }
+.fld textarea, .sheet textarea { resize: vertical; min-height: 96px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: 1.6fr 1fr auto; gap: 10px; align-items: end; }
+@media (max-width: 380px) { .row2 { grid-template-columns: 1fr; } }
+.err { color: var(--err); font-size: 17px; font-weight: 600; margin: 0; }
+.hint { color: var(--muted); font-size: 16px; margin: -4px 0 0; }
+.sect { font-weight: 700; font-size: 18px; color: var(--gold-50); }
+.addlink { justify-self: start; background: none; border: 0; padding: 8px 0; min-height: 44px; font: 700 17px var(--body); color: var(--gold-300); cursor: pointer; text-align: left; }
+.x { background: none; border: 0; color: var(--muted); font-size: 28px; cursor: pointer; width: 48px; height: 48px; }
+.dgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.dcard { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--surface); cursor: pointer; padding: 0; text-align: center; font: inherit; color: var(--muted); }
+.dcard .mh { display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: #fff; font: 600 19px var(--brand); letter-spacing: .12em; }
+.dcard .mh svg { width: 20px; height: 20px; }
+.dcard .cal { display: block; padding: 12px 8px 14px; font-size: 16px; }
+.dcard[aria-pressed="true"] { border-color: var(--gold-300); box-shadow: 0 0 0 2px var(--gold-500), 0 0 24px rgba(242,184,102,.2); color: var(--ink); font-weight: 700; }
+.photo { justify-self: center; width: 128px; height: 148px; border-radius: 50%; border: 1.5px dashed var(--gold-500); background: var(--surface); display: grid; place-items: center; cursor: pointer; overflow: hidden; padding: 0; color: var(--gold-300); }
+.photo .plus { display: grid; justify-items: center; gap: 2px; font: 700 16px var(--body); }
+.photo .plus b { font-size: 44px; line-height: .9; font-weight: 300; }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.chips { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 16px; min-height: 44px; font: 600 16px var(--body); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--gold-btn); color: var(--on-gold); border-color: var(--gold-300); }
+.f-bw { filter: grayscale(1) contrast(1.05); }
+.f-old { filter: sepia(.85) contrast(.92) brightness(1.03); }
+.ini { display: grid; place-items: center; border-radius: 50%; background: #121A24; color: var(--gold-300); font: 600 18px var(--display); overflow: hidden; flex: none; border: 1.5px solid var(--gold-500); }
+.ini img { width: 100%; height: 100%; object-fit: cover; }
+.toastin { background: rgba(140,201,160,.12); border: 1px solid rgba(140,201,160,.45); color: var(--ok); border-radius: 16px; padding: 12px 16px; font-weight: 600; font-size: 17px; }
+.prow { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; cursor: pointer; text-align: left; font: inherit; color: var(--ink); width: 100%; min-height: 72px; }
+.prow:hover { border-color: var(--line-gold); }
+.prow .m { flex: 1; min-width: 0; }
+.prow b { display: block; font-size: 19px; }
+.prow small { color: var(--muted); font-size: 15px; }
+.prow .cnt { display: flex; gap: 16px; color: var(--muted); font-size: 15px; margin-top: 2px; align-items: center; }
+.prow .cnt svg { width: 20px; height: 20px; vertical-align: -4px; }
+.dashed { width: 100%; min-height: 54px; border: 1px dashed var(--gold-500); color: var(--gold-300); background: none; border-radius: 18px; padding: 12px; font: 700 17px var(--body); cursor: pointer; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; min-height: 48px; }
+.tbtn { width: 48px; height: 48px; display: grid; place-items: center; background: var(--soft); border: 1px solid var(--line); border-radius: 14px; cursor: pointer; color: var(--gold-300); padding: 0; }
+.tbtn svg { width: 26px; height: 26px; display: block; }
+.editb { color: var(--gold-300); }
+.prow .editb { width: 40px; height: 40px; display: grid; place-items: center; border: 1px dashed var(--gold-500); border-radius: 12px; }
+.center { text-align: center; }
+.fam small { display: block; font: italic 500 22px var(--display); color: var(--muted); }
+.fam b { font: 600 38px/1.1 var(--display); color: var(--gold-50); }
+.counters { display: grid; grid-template-columns: 1fr 1fr; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 6px; }
+.counters div { display: grid; justify-items: center; gap: 2px; }
+.counters svg { width: 32px; height: 32px; }
+.counters b { font-size: 20px; font-variant-numeric: tabular-nums; color: var(--gold-50); }
+.counters small { color: var(--muted); font-size: 15px; }
+.tiles { display: grid; gap: 10px; }
+.tiles.t2 { grid-template-columns: 1fr 1fr; }
+.tiles.t3 { grid-template-columns: 1fr 1fr 1fr; }
+.tile { border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); border-radius: 18px; padding: 10px 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; font: 700 17px var(--body); cursor: pointer; min-height: 88px; }
+.tile svg { width: 36px; height: 36px; flex: none; }
+.tile:hover { border-color: var(--gold-500); }
+/* nakon klika gumb zasvijetli zlatno i kroz 10 s se smiri; tada je opet aktivan */
+.tile.cool { animation: cool 10s linear forwards; cursor: default; }
+@keyframes cool { 0% { background: rgba(217,174,107,.32); border-color: var(--gold-300); box-shadow: 0 0 28px rgba(242,184,102,.45); } 100% { background: var(--surface); border-color: var(--line-strong); box-shadow: none; } }
+.tile.cool svg { animation: glow 10s linear forwards; }
+@keyframes glow { 0% { filter: drop-shadow(0 0 10px rgba(242,184,102,.9)); } 100% { filter: none; } }
+.tile:active { transform: scale(.97); }
+.apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 8px; }
+.app-t { background: none; border: 0; cursor: pointer; display: grid; justify-items: center; gap: 6px; font-size: 14px; color: var(--ink); padding: 0; }
+.app-t span { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.app-t svg { width: 26px; height: 26px; }
+.preview { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; width: 100%; }
+.portrait { justify-self: center; width: 132px; height: 150px; border: 2px solid var(--gold-500); box-shadow: 0 0 0 6px rgba(217,174,107,.08), 0 0 40px rgba(242,184,102,.18); font-size: 40px; }
+.msTop { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-top: -18px; }
+.msTop .side { display: grid; justify-items: center; gap: 2px; text-align: center; }
+.msTop .side svg { width: 34px; height: 34px; }
+.msTop .side b { font-size: 19px; font-variant-numeric: tabular-nums; color: var(--gold-50); }
+.msTop .side small { color: var(--muted); font-size: 14px; }
+.msname { font: 600 38px/1.1 var(--display); margin: 0; color: var(--gold-50); }
+.dates { color: var(--muted); font-size: 17px; white-space: pre; }
+.rule { width: 120px; height: 18px; justify-self: center; display: flex; align-items: center; gap: 8px; color: var(--rel); }
+.rule::before, .rule::after { content: ""; flex: 1; border-top: 1px solid var(--line-gold); }
+.rule svg { width: 16px; height: 16px; }
+.quote { font: italic 500 24px/1.3 var(--display); margin: 0; text-wrap: balance; color: var(--ink); }
+.mem { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--gold-500); border-radius: 16px; padding: 14px 16px; display: grid; gap: 6px; }
+.mtop { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.mem .who { color: var(--gold-300); font-weight: 700; font-size: 17px; min-width: 0; }
+.mem .when { color: var(--muted); font-size: 15px; flex: none; font-variant-numeric: tabular-nums; }
+/* prozor sjećanja: ime + točno tri reda teksta, ostatak se lista unutar prozora */
+.mbody { position: relative; }
+.mem p { margin: 0; font-size: 18px; line-height: 27px; height: 81px; overflow-y: auto; overflow-wrap: anywhere; padding-right: 14px; scrollbar-width: none; overscroll-behavior: contain; }
+.mem p::-webkit-scrollbar { display: none; }
+.vbar { position: absolute; top: 1px; right: 0; bottom: 1px; width: 4px; border-radius: 4px; background: var(--line); }
+.vbar i { position: absolute; left: 0; width: 4px; border-radius: 4px; background: var(--gold-500); }
+.slider { display: flex; align-items: center; gap: 12px; }
+.slider button { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--gold-500); background: var(--surface); color: var(--gold-300); font-size: 22px; cursor: pointer; }
+.slider button:disabled { border-color: var(--line); color: var(--line-strong); cursor: default; }
+.slider .track { flex: 1; height: 3px; background: var(--line); border-radius: 3px; position: relative; }
+.slider .track i { position: absolute; top: 0; height: 3px; background: var(--gold-500); border-radius: 3px; transition: left .2s ease; }
+.mhead { display: flex; justify-content: space-between; align-items: baseline; }
+.mhead b { font: 600 26px var(--display); color: var(--gold-50); }
+.mhead small { color: var(--muted); font-size: 15px; }
+
+/* ---------- donji listovi (na računalu dijalozi) ---------- */
+.scrim { position: fixed; inset: 0; background: rgba(1, 4, 8, .68); z-index: 20; display: grid; align-items: end; justify-items: center; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+.sheet {
+  width: 100%; max-width: var(--col); background: linear-gradient(180deg, #0E1620, #070C12); border: 1px solid var(--line); border-bottom: 0; border-radius: 26px 26px 0 0; display: grid; gap: 14px; color: var(--ink);
+  padding: 12px max(22px, env(safe-area-inset-right, 0px)) calc(26px + env(safe-area-inset-bottom, 0px)) max(22px, env(safe-area-inset-left, 0px));
+  max-height: 92vh; overflow-y: auto; animation: up .2s ease-out; box-shadow: 0 -10px 50px rgba(0,0,0,.6);
+}
+@media (min-width: 960px) { .scrim:not(.auth) { align-items: center; } .sheet { border-radius: 26px; border-bottom: 1px solid var(--line); max-width: 540px; padding-bottom: 26px; } .grip { display: none; } }
+@keyframes up { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+.grip { width: 44px; height: 4px; border-radius: 4px; background: var(--line-strong); justify-self: center; }
+.sheet h3 { font: 600 30px/1.1 var(--display); margin: 2px 0 0; color: var(--gold-50); }
+.sheet p { margin: 0; color: var(--muted); font-size: 17px; }
+.sheet label { font-size: 16px; font-weight: 600; color: var(--muted); display: grid; gap: 6px; }
+.menu { list-style: none; margin: 0; padding: 0; display: grid; }
+.menu button { width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 16px 4px; min-height: 56px; font: 600 18px var(--body); color: var(--ink); cursor: pointer; }
+.menu button:hover { color: var(--gold-300); }
+.menu .ext { color: var(--gold-300); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: #0E1620; border: 1px solid var(--gold-500); color: var(--ink); padding: 14px 18px; border-radius: 18px; font-size: 17px; font-weight: 600; width: min(520px, calc(100% - 32px)); text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,.6), 0 0 24px rgba(242,184,102,.15); overflow-wrap: anywhere; }
+.toast.bad { border-color: var(--err); color: var(--err); }
+@media (min-width: 960px) { .toast { left: auto; right: calc(var(--col) / 2); transform: translateX(50%); } }
+.btnrow { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; }
+.danger { appearance: none; cursor: pointer; border-radius: 999px; padding: 12px 16px; min-height: 56px; background: transparent; color: var(--err); border: 1px solid var(--err); font: 700 18px/1.2 var(--body); }
+.danger.fill { background: #8E2F25; color: #fff; border-color: #C9604F; }
+.cancel { background: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 12px; min-height: 56px; font: 600 18px var(--body); color: var(--ink); cursor: pointer; }
+
+/* ---------- prijava (izgled iz dizajn paketa) ---------- */
+.scrim.auth { display: block; overflow-y: auto; background: var(--bg) url("img/svijeca-1170.webp") center top / 100% auto no-repeat; backdrop-filter: none; -webkit-backdrop-filter: none; }
+@media (min-width: 600px) and (max-width: 959px) { .scrim.auth { background-size: 600px auto; } }
+@media (min-width: 960px) {
+  /* na računalu prijava zauzima samo stupac aplikacije, scena lijevo ostaje vidljiva */
+  .scrim.auth { left: auto; width: var(--col); background: linear-gradient(180deg, var(--bg-top), var(--bg)); box-shadow: -1px 0 0 var(--line); }
+  .auth-in .lockup, .auth-hero .script, .auth-hero .hdiv, .auth-sig { display: none; }
+  #authTitle { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; margin: 0; font: 600 44px/1.1 var(--display); color: var(--gold-50); }
+}
+.auth-in { position: relative; max-width: 600px; margin: 0 auto; min-height: 100%; display: grid; align-content: start; gap: 0; padding: calc(12px + env(safe-area-inset-top, 0px)) max(22px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) max(22px, env(safe-area-inset-left, 0px)); }
+@media (min-width: 960px) { .auth-in { padding: 24px 30px 28px; } }
+.auth-top { display: flex; justify-content: space-between; align-items: center; }
+.auth-top .x { color: var(--ink); background: var(--soft); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; font-size: 26px; line-height: 1; }
+.auth-in .lockup { margin-top: 2px; }
+.auth-hero { width: min(54%, 290px); display: grid; justify-items: center; gap: 10px; text-align: center; margin-top: clamp(12px, 4vw, 36px); }
+.auth-hero .script { font-size: clamp(44px, 12.5vw, 60px); }
+.auth-hero p:not(.script) { margin: 0; font-size: 18px; line-height: 1.4; text-shadow: 0 1px 10px rgba(0,0,0,.9); }
+@media (min-width: 960px) { .auth-hero { width: auto; margin-top: 40px; } }
+#authForm { display: grid; gap: 14px; margin-top: clamp(90px, 40vw, 250px); }
+.authsub { margin: 0 0 4px; text-align: center; font-size: 18px; text-shadow: 0 1px 10px rgba(0,0,0,.9); }
+@media (min-width: 960px) { #authForm { margin-top: 26px; } }
+.inp { position: relative; display: block; }
+.inp > svg { z-index: 1; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; color: var(--ink); pointer-events: none; }
+.inp input { width: 100%; min-height: 60px; border-radius: 999px; border: 1px solid rgba(232,214,190,.30); background: var(--field); color: var(--ink); font: 18px var(--body); padding: 14px 58px 14px 58px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.inp input::placeholder { color: #B5B2AC; }
+.inp input:focus { outline: none; border-color: var(--gold-500); box-shadow: 0 0 0 3px rgba(217,174,107,.18); }
+.inp .eye { z-index: 1; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; display: grid; place-items: center; background: none; border: 0; color: var(--ink); cursor: pointer; border-radius: 50%; }
+.inp .eye svg { width: 24px; height: 24px; }
+.forgot { justify-self: end; background: none; border: 0; color: var(--gold-300); font: 600 17px var(--body); cursor: pointer; padding: 6px 4px; min-height: 44px; margin-top: -8px; }
+.or { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 17px; }
+.or::before, .or::after { content: ""; flex: 1; border-top: 1px solid var(--line); }
+.ssorow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 400px) { .ssorow { grid-template-columns: 1fr; } }
+.sso { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 58px; border: 1px solid rgba(232,214,190,.30); background: rgba(10,15,21,.80); color: var(--ink); border-radius: 999px; padding: 10px 14px; font: 600 17px var(--body); cursor: pointer; }
+.sso:hover { border-color: var(--gold-500); }
+.sso svg { width: 22px; height: 22px; flex: none; }
+.switch { text-align: center; font-size: 18px; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.switch .linkbtn { font-size: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.auth-foot { display: grid; justify-items: center; gap: 8px; margin-top: 26px; position: relative; }
+.auth-foot nav { display: flex; flex-wrap: wrap; justify-content: center; }
+.auth-foot nav button { background: none; border: 0; color: var(--ink); font: 15px var(--body); padding: 10px 12px; min-height: 44px; cursor: pointer; }
+.auth-foot nav button + button { border-left: 1px solid var(--line); }
+.auth-sig { position: absolute; right: -6px; bottom: 54px; text-align: center; color: var(--gold-300); font-size: 30px; line-height: .95; opacity: .85; pointer-events: none; }
+@media (max-width: 520px) { .auth-sig { display: none; } }
+
+/* ---------- birač datuma ---------- */
+.dp { display: grid; gap: 10px; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line-strong); border-radius: 16px; overflow: hidden; background: var(--field); }
+.seg button { border: 0; background: transparent; padding: 10px 4px; min-height: 48px; font: 600 16px var(--body); color: var(--muted); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--gold-btn); color: var(--on-gold); }
+.wheels { display: flex; justify-content: center; gap: 12px; }
+.whw { display: grid; justify-items: center; gap: 4px; }
+.wh { width: 80px; display: grid; grid-template-rows: 32px 46px 32px; text-align: center; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--field); touch-action: none; user-select: none; -webkit-user-select: none; cursor: ns-resize; overflow: hidden; }
+.wh.y { width: 100px; }
+.wh span { display: grid; place-items: center; font-variant-numeric: tabular-nums; }
+.wh .pv, .wh .nx { font-size: 16px; color: #7F7C77; cursor: pointer; }
+.wh .cv { font: 700 22px var(--body); color: var(--gold-50); border-block: 1px solid var(--line-gold); background: rgba(217,174,107,.08); }
+.whl { font-size: 14px; color: var(--muted); }
+.dplab { font-size: 16px; font-weight: 600; color: var(--muted); }
+/* odabir slike, galerija, fotoaparat */
+.opt { display: flex; align-items: center; gap: 16px; width: 100%; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 16px 4px; min-height: 60px; font: 600 18px var(--body); color: var(--ink); cursor: pointer; text-align: left; }
+.opt svg { width: 28px; height: 28px; flex: none; color: var(--gold-300); }
+.gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.gal button { border: 0; padding: 0; background: none; cursor: pointer; display: grid; gap: 4px; font-size: 14px; color: var(--ink); text-align: center; }
+.gal img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; display: block; }
+.gal .ph { width: 100%; aspect-ratio: 1; border-radius: 10px; background: var(--soft); }
+.cam { position: fixed; inset: 0; z-index: 40; background: #000; display: grid; grid-template-rows: auto 1fr auto; color: #fff; }
+.cam-top { display: flex; justify-content: space-between; align-items: center; padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); font-size: 16px; opacity: .85; }
+.cam-top .rec { display: flex; align-items: center; gap: 6px; }
+.cam-top .rec i { width: 8px; height: 8px; border-radius: 50%; background: #E5484D; animation: blink 1.2s infinite; }
+@keyframes blink { 50% { opacity: .2; } }
+.vf { position: relative; overflow: hidden; display: grid; place-items: end center; background: radial-gradient(circle at 50% 40%, #D9E2D3, #7F8D78 75%); }
+.vf img { width: 100%; max-height: 100%; object-fit: contain; animation: breathe 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes breathe { 0%,100% { transform: scale(1.02) translate(0,0); } 50% { transform: scale(1.05) translate(-1%, .6%); } }
+.vf.frozen img { animation: none; transform: scale(1.03); }
+.vf::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, transparent 33.1%, rgba(255,255,255,.28) 33.3%, transparent 33.5%, transparent 66.5%, rgba(255,255,255,.28) 66.7%, transparent 66.9%), linear-gradient(to bottom, transparent 33.1%, rgba(255,255,255,.28) 33.3%, transparent 33.5%, transparent 66.5%, rgba(255,255,255,.28) 66.7%, transparent 66.9%); pointer-events: none; }
+.vf.frozen::after { display: none; }
+.focus { position: absolute; width: 46%; aspect-ratio: 1; border: 1.5px solid #F5C542; border-radius: 6px; bottom: 30%; left: 27%; z-index: 1; }
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 2; }
+.flash.go { animation: flash .35s ease-out; }
+@keyframes flash { 0% { opacity: .95; } 100% { opacity: 0; } }
+.cam-bot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 18px max(20px, env(safe-area-inset-left, 0px)) calc(22px + env(safe-area-inset-bottom, 0px)); }
+.cam-bot button { background: none; border: 0; color: #fff; font: 600 18px var(--body); cursor: pointer; min-height: 48px; }
+.shutter { width: 72px; height: 72px; border-radius: 50%; border: 4px solid #fff !important; background: transparent; display: grid; place-items: center; padding: 0; }
+.shutter span { width: 56px; height: 56px; border-radius: 50%; background: #fff; display: block; }
+.shutter:active span { transform: scale(.9); }
+.cam-bot .r { justify-self: end; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; } }
+</style>
+</head>
+<body data-view="home">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gGold" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#F4DBA6"/><stop offset=".55" stop-color="#D9AE6B"/><stop offset="1" stop-color="#A8773D"/></linearGradient>
+    <radialGradient id="gFlame" cx=".5" cy=".72" r=".62"><stop offset="0" stop-color="#FFF8EC"/><stop offset=".45" stop-color="#F9DB98"/><stop offset="1" stop-color="#E39A3B"/></radialGradient>
+    <radialGradient id="gHalo"><stop offset="0" stop-color="#F2B866" stop-opacity=".6"/><stop offset="1" stop-color="#F2B866" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gWax" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4DC"/><stop offset="1" stop-color="#E4C08A"/></linearGradient>
+    <radialGradient id="gPetal" cx=".5" cy=".25" r=".85"><stop offset="0" stop-color="#FFFCF5"/><stop offset="1" stop-color="#E6D2AE"/></radialGradient>
+  </defs>
+</svg>
+
+<div class="bgimg" aria-hidden="true"></div>
+<aside class="scene" aria-hidden="true">
+  <div class="lockup"><img class="znak" src="img/logo-znak.svg" alt=""><span class="wordmark">ETERNIA</span><p class="tagline">Svjetlo uspomena koje nikada ne gasne.</p></div>
+  <div class="scene-txt"><p class="script">Ljubav<br>živi vječno.</p></div>
+</aside>
+
+<div class="app" id="app">
+  <header class="bar">
+    <button class="brand" id="brand" aria-label="Eternia naslovna"></button>
+    <div class="barr">
+      <span class="chipl" aria-label="Jezik: hrvatski">HR <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      <button class="iconbtn" id="menuBtn" aria-label="Izbornik">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </header>
+  <main id="view"></main>
+  <footer class="foot" id="foot">
+    <span class="idiv"><svg viewBox="0 0 34 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 9c-3-4-5.5-6-8.5-6a6 6 0 0 0 0 12c3 0 5.5-2 8.5-6Zm0 0c3 4 5.5 6 8.5 6a6 6 0 0 0 0-12c-3 0-5.5 2-8.5 6Z"/></svg></span>
+    <nav><button data-info="Uvjeti korištenja">Uvjeti korištenja</button><button data-info="Privatnost">Privatnost</button><button data-info="Kontakt">Kontakt</button></nav>
+  </footer>
+</div>
+
+<div class="scrim auth" id="authScrim" hidden>
+  <div class="auth-in" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="auth-top">
+      <button class="x" data-close="authScrim" aria-label="Zatvori prijavu">×</button>
+      <span class="chipl" aria-label="Jezik: hrvatski">HR <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>
+    </div>
+    <div class="lockup"><img class="znak" src="img/logo-znak.svg" alt=""><span class="wordmark">ETERNIA</span><p class="tagline">Svjetlo uspomena koje nikada ne gasne.</p></div>
+    <div class="auth-hero">
+      <h2 class="vh" id="authTitle">Prijava</h2>
+      <p class="script" aria-hidden="true">Ljubav<br>živi vječno.</p>
+      <span class="hdiv" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20.5s-7.5-4.6-9-9.3C2 7.9 4.2 5 7.2 5c2 0 3.4 1.1 4.8 2.8C13.4 6.1 14.8 5 16.8 5c3 0 5.2 2.9 4.2 6.2-1.5 4.7-9 9.3-9 9.3Z"/></svg></span>
+    </div>
+    <form id="authForm" novalidate>
+      <p id="authSub" class="authsub">Mjesto sjećanja, povezanosti i vječne ljubavi.</p>
+      <label class="inp"><span class="vh">E-mail adresa</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.2-3.9 4-5.8 7.5-5.8s6.3 1.9 7.5 5.8"/></svg>
+        <input id="em" type="email" placeholder="E-mail adresa" autocomplete="email" inputmode="email">
+      </label>
+      <label class="inp"><span class="vh">Lozinka</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg>
+        <input id="pw" type="password" placeholder="Lozinka" autocomplete="current-password">
+        <button class="eye" type="button" id="pwEye" aria-label="Prikaži lozinku" aria-pressed="false"></button>
+      </label>
+      <button class="forgot" type="button" id="forgot">Zaboravili ste lozinku?</button>
+      <button class="cta" type="submit" id="authSubmit"><span id="authSubmitTxt">Prijavite se</span><span class="arr" aria-hidden="true">→</span></button>
+      <div class="or">ili</div>
+      <div class="ssorow">
+        <button class="sso" type="button" data-sso="Google"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Nastavite s Googleom</button>
+        <button class="sso" type="button" data-sso="Apple"><svg viewBox="0 0 384 512" aria-hidden="true"><path fill="#fff" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Nastavite s Appleom</button>
+      </div>
+      <div class="switch"><span id="switchTxt">Nemate račun?</span> <button class="linkbtn" type="button" id="switchBtn">Registrirajte se ›</button></div>
+    </form>
+    <div class="auth-foot">
+      <span class="idiv"><svg viewBox="0 0 34 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 9c-3-4-5.5-6-8.5-6a6 6 0 0 0 0 12c3 0 5.5-2 8.5-6Zm0 0c3 4 5.5 6 8.5 6a6 6 0 0 0 0-12c-3 0-5.5 2-8.5 6Z"/></svg></span>
+      <nav><button type="button" data-info="Uvjeti korištenja">Uvjeti korištenja</button><button type="button" data-info="Privatnost">Privatnost</button><button type="button" data-info="Kontakt">Kontakt</button></nav>
+      <p class="auth-sig script" aria-hidden="true">Jer<br>uspomene<br>povezuju.</p>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="menuScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Izbornik">
+    <div class="grip"></div>
+    <ul class="menu" id="menuList"></ul>
+  </div>
+</div>
+
+<div class="scrim" id="delScrim" hidden>
+  <div class="sheet" role="alertdialog" aria-modal="true" aria-labelledby="delTitle">
+    <div class="grip"></div>
+    <h3 id="delTitle">Obrisati?</h3>
+    <p id="delText"></p>
+    <div class="btnrow" style="grid-template-columns:1fr 1fr"><button class="cancel" data-close="delScrim">Odustani</button><button class="danger fill" id="delYes">Obriši</button></div>
+  </div>
+</div>
+
+<div class="scrim" id="memScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="memTitle">
+    <div class="grip"></div>
+    <h3 id="memTitle">Napiši sjećanje</h3>
+    <p id="memFor"></p>
+    <label for="memRel">Povezanost
+      <select id="memRel">
+        <option>unuk</option><option>unuka</option><option>sin</option><option>kći</option><option>brat</option><option>sestra</option>
+        <option>suprug</option><option>supruga</option><option>prijatelj</option><option>prijateljica</option><option>susjed</option><option>susjeda</option><option>kolega</option><option>kolegica</option>
+      </select>
+    </label>
+    <label for="memTxt">Sjećanje<textarea id="memTxt" maxlength="300" rows="4" placeholder="Napišite kratko sjećanje…"></textarea></label>
+    <p class="hint" id="memCnt" style="margin:0">0 / 300</p>
+    <button class="cta" id="memSave">Objavi sjećanje</button>
+  </div>
+</div>
+
+<input type="file" id="fileIn" accept="image/*" hidden>
+
+<div class="scrim" id="picScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="picTitle">
+    <div class="grip"></div>
+    <h3 id="picTitle">Dodaj sliku</h3>
+    <div>
+      <button class="opt" id="optGal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2"/><path d="m4 18 5.5-5.5 4 4 2.5-2.5L21 18"/></svg>Učitaj iz galerije</button>
+      <button class="opt" id="optCam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 8h3l1.6-2.5h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13.2" r="3.6"/></svg>Pokreni fotoaparat</button>
+      <button class="opt" id="optFile" style="border-bottom:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6Z"/><path d="M14 3v4h4M12 10v7M9 14l3 3 3-3"/></svg>Odaberi pravu datoteku s uređaja</button>
+    </div>
+    <button class="cancel" data-close="picScrim">Odustani</button>
+  </div>
+</div>
+
+<div class="scrim" id="galScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="galTitle">
+    <div class="grip"></div>
+    <h3 id="galTitle">Galerija</h3>
+    <p>Nedavno · odaberite sliku</p>
+    <div class="gal" id="galGrid"></div>
+    <button class="cancel" data-close="galScrim">Odustani</button>
+  </div>
+</div>
+
+<div class="cam" id="cam" hidden role="dialog" aria-modal="true" aria-label="Fotoaparat">
+  <div class="cam-top"><span class="rec"><i></i>Fotoaparat (simulacija)</span><span>1×</span></div>
+  <div class="vf" id="vf"><img id="camImg" alt="Prikaz fotoaparata"><span class="focus" id="camFocus"></span><span class="flash" id="flash"></span></div>
+  <div class="cam-bot" id="camLive"><button id="camCancel" style="justify-self:start">Odustani</button><button class="shutter" id="shutter" aria-label="Snimi fotografiju"><span></span></button><span></span></div>
+  <div class="cam-bot" id="camDone" hidden><button id="camRetake" style="justify-self:start">Ponovi</button><span></span><button class="r" id="camUse">Koristi fotografiju</button></div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(() => {
+  const D = {
+    kat: { n: "Katolički", head: "#1F3A5F", acc: "#C9A227", bg: "#F4F6FA", cal: "katolički kalendar", b: "* ", d: "† " },
+    pra: { n: "Pravoslavni", head: "#6B1E2B", acc: "#D4AF37", bg: "#FAF4F2", cal: "pravoslavni kalendar", b: "* ", d: "† " },
+    isl: { n: "Islamski", head: "#1E5B45", acc: "#D9C27A", bg: "#F3F8F5", cal: "islamski kalendar", b: "rođ. ", d: "pres. " },
+    neu: { n: "Neutralni", head: "#4A5560", acc: "#CFD6DC", bg: "#F5F5F4", cal: "samo osobni datumi", b: "", d: "" },
+    pro: { n: "Protestantski", head: "#2E3A46", acc: "#E6E1D3", bg: "#F5F6F7", cal: "protestantski kalendar", b: "* ", d: "† " },
+    bud: { n: "Budistički", head: "#5E4691", acc: "#D9C8F0", bg: "#F7F4FB", cal: "budistički kalendar", b: "rođ. ", d: "prem. " },
+    zid: { n: "Židovski", head: "#1F3D73", acc: "#E2BE52", bg: "#FAF7EE", cal: "židovski kalendar", b: "rođ. ", d: "um. " },
+  };
+  const COUNTRIES = {
+    HR: { n: "Hrvatska", main: ["kat", "pra", "isl", "neu"], more: ["pro", "zid", "bud"] },
+    BA: { n: "Bosna i Hercegovina", main: ["isl", "pra", "kat", "neu"], more: ["pro", "zid", "bud"] },
+    RS: { n: "Srbija", main: ["pra", "kat", "isl", "neu"], more: ["pro", "zid", "bud"] },
+    SI: { n: "Slovenija", main: ["kat", "pra", "isl", "neu"], more: ["pro", "zid", "bud"] },
+    DE: { n: "Njemačka", main: ["kat", "pro", "isl", "neu"], more: ["pra", "zid", "bud"] },
+    AT: { n: "Austrija", main: ["kat", "pro", "isl", "neu"], more: ["pra", "zid", "bud"] },
+  };
+  const SAMPLE = [
+    { t: "MS", n: "Ivan Horvat", by: 1938, dy: 2019, pl: "Zagreb, Mirogoj", d: "kat", av: ["IH"], demo: "horvat" },
+    { t: "MS", n: "Marija Horvat", by: 1941, dy: 2022, pl: "Zagreb, Mirogoj", d: "kat", av: ["MH"], demo: "horvat" },
+    { t: "MS", n: "Josip Horvat", by: 1912, dy: 1979, pl: "Zagreb, Mirogoj", d: "kat", av: ["JH"], demo: "horvat" },
+    { t: "GS", n: "Obitelj Horvat", cnt: 3, pl: "Zagreb, Mirogoj", d: "kat", av: ["IH", "MH", "JH"], demo: "horvat" },
+    { t: "MS", n: "Milan Jovanović", by: 1935, dy: 2017, pl: "Vukovar", d: "pra", av: ["MJ"] },
+    { t: "MS", n: "Desanka Jovanović", by: 1939, dy: 2021, pl: "Vukovar", d: "pra", av: ["DJ"] },
+    { t: "GS", n: "Obitelj Jovanović", cnt: 2, pl: "Vukovar", d: "pra", av: ["MJ", "DJ"] },
+    { t: "MS", n: "Mehmed Hodžić", by: 1944, dy: 2020, pl: "Rijeka", d: "isl", av: ["MH"] },
+    { t: "MS", n: "Fatima Hodžić", by: 1947, dy: 2023, pl: "Rijeka", d: "isl", av: ["FH"] },
+    { t: "GS", n: "Obitelj Hodžić", cnt: 2, pl: "Rijeka", d: "isl", av: ["MH", "FH"] },
+    { t: "MS", n: "Ana Kovač", by: 1950, dy: 2021, pl: "Split, Lovrinac", d: "neu", av: ["AK"] },
+    { t: "MS", n: "Tomislav Perić", by: 1948, dy: 2024, pl: "Split, Lovrinac", d: "neu", av: ["TP"] },
+    { t: "GS", n: "Obitelj Kovač-Perić", cnt: 2, pl: "Split, Lovrinac", d: "neu", av: ["AK", "TP"] },
+  ];
+
+  function sym(k, c) {
+    const s = 'viewBox="0 0 24 24"';
+    switch (k) {
+      case "kat": case "pro": return `<svg ${s}><rect x="10.6" y="2" width="2.8" height="20" fill="${c}"/><rect x="5.5" y="6.8" width="13" height="2.8" fill="${c}"/></svg>`;
+      case "pra": return `<svg ${s}><rect x="10.7" y="2" width="2.6" height="20" fill="${c}"/><rect x="8.3" y="4.6" width="7.4" height="1.9" fill="${c}"/><rect x="5.2" y="8.3" width="13.6" height="2.4" fill="${c}"/><path d="M6.8 16.4 17.2 13.4" stroke="${c}" stroke-width="2.1"/></svg>`;
+      case "isl": return `<svg ${s}><path d="M14.5 3.6a8.6 8.6 0 1 0 0 16.8 7 7 0 1 1 0-16.8Z" fill="${c}"/><path d="m18.6 9.2.8 1.8 2 .2-1.5 1.3.5 1.9-1.8-1-1.8 1 .5-1.9-1.5-1.3 2-.2Z" fill="${c}"/></svg>`;
+      case "neu": return `<svg ${s} fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><path d="M12 12c-2-2.6-3.6-4-5.6-4a4 4 0 0 0 0 8c2 0 3.6-1.4 5.6-4Zm0 0c2 2.6 3.6 4 5.6 4a4 4 0 0 0 0-8c-2 0-3.6 1.4-5.6 4Z"/></svg>`;
+      case "bud": { let sp = ""; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; sp += `<line x1="12" y1="12" x2="${(12 + 7.4 * Math.cos(a)).toFixed(2)}" y2="${(12 + 7.4 * Math.sin(a)).toFixed(2)}"/><circle cx="${(12 + 10.4 * Math.cos(a)).toFixed(2)}" cy="${(12 + 10.4 * Math.sin(a)).toFixed(2)}" r="1.2" fill="${c}" stroke="none"/>`; }
+        return `<svg ${s} fill="none" stroke="${c}" stroke-width="1.3"><circle cx="12" cy="12" r="7.4" stroke-width="1.7"/><circle cx="12" cy="12" r="1.8" fill="${c}"/>${sp}</svg>`; }
+      case "zid": return `<svg ${s} fill="none" stroke="${c}" stroke-width="1.8"><path d="M12 2.5 20.6 17.3H3.4Z"/><path d="M12 21.5 3.4 6.7h17.2Z"/></svg>`;
+    }
+    return "";
+  }
+  const ZNAK = `<img class="znak" src="img/logo-znak.svg" alt="">`;
+  const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20.5s-7.5-4.6-9-9.3C2 7.9 4.2 5 7.2 5c2 0 3.4 1.1 4.8 2.8C13.4 6.1 14.8 5 16.8 5c3 0 5.2 2.9 4.2 6.2-1.5 4.7-9 9.3-9 9.3Z"/></svg>`;
+  /* svijeća u staklu i bijeli cvijet, u stilu pozadinske fotografije */
+  const PETALS = [0, 72, 144, 216, 288].map(r => `<ellipse cx="18.5" cy="7.4" rx="3.3" ry="5.2" transform="rotate(${r} 18.5 13)" fill="url(#gPetal)" stroke="#C9A469" stroke-width=".45"/>`).join("");
+  const IC = {
+    candle: `<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="8" r="8" fill="url(#gHalo)"/><path d="M16 2.2c-2.7 3.7-3.1 6 0 7.8 3.1-1.8 2.7-4.1 0-7.8Z" fill="url(#gFlame)"/><path d="M16 9.6v2.3" stroke="#3A2A18" stroke-width=".9"/><rect x="9.6" y="12.2" width="12.8" height="16.6" rx="2" fill="url(#gWax)" opacity=".95"/><rect x="8.6" y="11.2" width="14.8" height="18.6" rx="2.6" fill="none" stroke="url(#gGold)" stroke-width="1.1"/><path d="M16 20.6c-1.1-1.5-2-2.1-2.9-2.1a2.1 2.1 0 0 0 0 4.2c.9 0 1.8-.6 2.9-2.1Zm0 0c1.1 1.5 2 2.1 2.9 2.1a2.1 2.1 0 0 0 0-4.2c-.9 0-1.8.6-2.9 2.1Z" fill="none" stroke="#B98A4A" stroke-width=".8"/></svg>`,
+    flower: `<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5.5 29c3.5-6.4 7.6-10.4 13-13" fill="none" stroke="url(#gGold)" stroke-width="1.2" stroke-linecap="round"/><path d="M9.6 23.6c-3.4.6-5.6-1.2-6.1-3.6 2.8-.8 5 .3 6.1 3.6Z" fill="#7C8656"/><path d="M12.4 20.8c.2-3.2 2.2-4.8 4.4-4.9-.1 2.6-1.6 4.4-4.4 4.9Z" fill="#6A7449"/>${PETALS}<circle cx="18.5" cy="13" r="2.6" fill="#E2B25E"/><circle cx="18.5" cy="13" r="1.2" fill="#C98F45"/></svg>`,
+    paper: `<svg viewBox="0 0 32 32" fill="none" stroke="url(#gGold)" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h11l6 6v20H8Z" fill="rgba(244,219,166,.08)"/><path d="M19 3v6h6M12 15h9M12 19.5h9M12 24h6" stroke-linecap="round"/></svg>`,
+    bell: `<svg viewBox="0 0 32 32" fill="none" stroke="url(#gGold)" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16 4.5c-4.6 0-7 3.6-7 8v6l-2.5 4h19L23 18.5v-6c0-4.4-2.4-8-7-8Z" fill="rgba(244,219,166,.08)"/><path d="M13.4 25.5a2.6 2.6 0 0 0 5.2 0"/></svg>`,
+    edit: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 3h9l4 4v6"/><path d="M5 3v18h7"/><path d="M8 9h6M8 12.5h5"/><path d="m14 20 .6-2.6 5.2-5.2 2 2-5.2 5.2Z" fill="currentColor"/></svg>`,
+    heart: on => `<svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9-9.3C2 7.9 4.2 5 7.2 5c2 0 3.4 1.1 4.8 2.8C13.4 6.1 14.8 5 16.8 5c3 0 5.2 2.9 4.2 6.2-1.5 4.7-9 9.3-9 9.3Z" fill="${on ? "#D9AE6B" : "none"}" stroke="${on ? "#F4DBA6" : "#E6C794"}" stroke-width="1.6"/></svg>`,
+    map: `<svg viewBox="0 0 26 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M2 5.5 9 3l8 2.5 7-2.5v15.5L17 21l-8-2.5L2 21Z"/><path d="M9 3v15.5M17 5.5V21"/><path d="M19.5 15.5s-3-3.2-3-5.2a3 3 0 0 1 6 0c0 2-3 5.2-3 5.2Z" fill="#D9AE6B" stroke="none"/></svg>`,
+    bubble: `<svg viewBox="0 0 24 24"><path d="M4 5h16a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 20 17H10l-5 4v-4H4a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 4 5Z" fill="#fff"/></svg>`,
+    mail: `<svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5" fill="#fff"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5" fill="none" stroke="#8A6D3B" stroke-width="1.4"/></svg>`,
+    link: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="4" y="7" width="10" height="12" rx="2"/><rect x="10" y="4" width="10" height="12" rx="2" fill="#5F5A52"/></svg>`,
+    search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>`,
+  };
+  const EYE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  const EYE_OFF = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 12S6 5.5 12 5.5c1.6 0 3 .4 4.2 1M21.5 12S18 18.5 12 18.5c-1.6 0-3-.4-4.2-1"/><path d="M9.9 14.1a3 3 0 0 1 4.2-4.2"/><path d="M4 20 20 4"/></svg>`;
+
+  /* ---------- birač datuma ---------- */
+  const YNOW = new Date().getFullYear();
+  function dpDefault(mode, yearsBack) { return { mode, d: 15, m: 6, y: YNOW - yearsBack }; }
+  function fmtP(P) { return P.mode === "full" ? `${P.d}. ${P.m}. ${P.y}.` : P.mode === "year" ? `${P.y}.` : ""; }
+  const dim = (m, y) => new Date(y, m, 0).getDate();
+  const RNG = { d: P => [1, dim(P.m, P.y)], m: () => [1, 12], y: () => [1850, YNOW] };
+  function dpVal(P, part, off) {
+    const [lo, hi] = RNG[part](P); const v = P[part] + off;
+    if (part === "y") return v < lo || v > hi ? "" : v;
+    const n = hi - lo + 1; return ((v - lo) % n + n) % n + lo;
+  }
+  const dpLab = v => v === "" ? "" : v + ".";
+  const DP_MODES = { born: [["full", "Datum"], ["year", "Godina"], ["none", "Nepoznato"]], died: [["full", "Datum"], ["year", "Godina"], ["none", "Nepoznato"]],
+                     rod: [["full", "Datum"], ["year", "Godina"], ["none", "Bilo koji"]], smrt: [["full", "Datum"], ["year", "Godina"], ["none", "Bilo koji"]] };
+  const dpWheel = (id, P, part) => `<div class="whw"><div class="wh ${part}" data-dpid="${id}" data-part="${part}" tabindex="0" role="spinbutton" aria-label="${{ d: "Dan", m: "Mjesec", y: "Godina" }[part]}" aria-valuenow="${P[part]}"><span class="pv">${dpLab(dpVal(P, part, -1))}</span><span class="cv">${dpLab(P[part])}</span><span class="nx">${dpLab(dpVal(P, part, 1))}</span></div><span class="whl">${{ d: "dan", m: "mjesec", y: "godina" }[part]}</span></div>`;
+  function dpHTML(id, P) {
+    return `<div class="dp" data-dp="${id}"><div class="seg">${DP_MODES[id].map(([k, l]) => `<button type="button" data-dpmode="${k}" aria-pressed="${P.mode === k}">${l}</button>`).join("")}</div>` +
+      (P.mode === "none" ? "" : `<div class="wheels">${P.mode === "full" ? dpWheel(id, P, "d") + dpWheel(id, P, "m") : ""}${dpWheel(id, P, "y")}</div>`) + `</div>`;
+  }
+  const fresh = () => ({ sq: { ime: "", prez: "", rod: "", smrt: "", done: false }, sqP: { rod: dpDefault("none", 65), smrt: dpDefault("none", 5) }, logged: false, user: "Ivana", country: "HR", more: false, design: null, view: "home",
+    people: [], gsName: "", editIdx: null, draft: null, banner: "", fav: false, memIdx: 0, msIdx: 0 });
+  const S = fresh();
+  /* S.g = trenutno otvorena grobna stranica (vlastita ili demo); S.design/people/gsName čitaju se iz nje */
+  const newMine = () => ({ id: "mine" + Date.now(), design: null, people: [], gsName: "", own: true, place: "" });
+  let MINE = newMine();
+  const DEMO = {};
+  S.g = MINE;
+  for (const k of ["design", "people", "gsName"]) { delete S[k]; Object.defineProperty(S, k, { get() { return S.g[k]; }, set(v) { S.g[k] = v; }, enumerable: false }); }
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fold = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d");
+  const initials = n => n.trim().split(/\s+/).map(w => w[0] || "").slice(0, 2).join("").toUpperCase() || "?";
+  const filt = f => f === "bw" ? "f-bw" : f === "old" ? "f-old" : "";
+  const avatar = (p, size) => `<span class="ini" style="width:${size}px;height:${Math.round(size * 1.08)}px">${p.photo ? `<img class="${filt(p.filter)}" src="${p.photo}" alt="">` : esc(initials(p.name))}</span>`;
+  const sum = k => S.people.reduce((a, p) => a + p[k], 0);
+  const osobe = n => n === 1 ? "1 osoba" : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 > 20)) ? `${n} osobe` : `${n} osoba`;
+  const yearOf = s => { const m = String(s || "").match(/(\d{4})\.?\s*$/); return m ? +m[1] : null; };
+  const DM_RE = /^\s*\d{1,2}\.\s*\d{1,2}\.?\s*$/;
+  const blankPerson = () => ({ name: "", bornP: dpDefault("full", 65), diedP: dpDefault("full", 5), born: fmtP(dpDefault("full", 65)), died: fmtP(dpDefault("full", 5)), text: "", photo: null, filter: "std", special: [], zap: 0, gori: 0, cvi: 0, mems: [] });
+
+  let tt;
+  function toast(msg, bad) { const el = $("toast"); el.textContent = msg; el.classList.toggle("bad", !!bad); el.hidden = false; clearTimeout(tt); tt = setTimeout(() => el.hidden = true, 3200); }
+  const open = id => { $(id).hidden = false; if (id === "authScrim") document.body.style.overflow = "hidden"; };
+  const close = id => { $(id).hidden = true; if (id === "authScrim") document.body.style.overflow = ""; };
+
+  function dateLine(p, short) {
+    const d = D[S.design] || D.neu;
+    if (short) return (p.born || p.died) ? `${p.born || "?"} – ${p.died || "?"}` : "datumi nisu upisani";
+    if (!p.born && !p.died) return "";
+    if (!d.b) return `${p.born || "?"}  –  ${p.died || "?"}`;
+    return [p.born ? d.b + p.born : "", p.died ? d.d + p.died : ""].filter(Boolean).join("     ");
+  }
+
+  function chrome() {
+    const app = $("app"), d = S.design && !["home", "design", "search"].includes(S.view) ? D[S.design] : null;
+    document.body.dataset.view = S.view;
+    app.classList.toggle("themed", !!d);
+    app.style.setProperty("--rel", d ? d.acc : "#E6C794");
+    app.style.setProperty("--relh", d ? d.head : "transparent");
+    const sub = { design: "nova stranica", person: "nova memorijalna stranica", gsedit: "grobna stranica · uređivanje", share: "grobna stranica", gs: "grobna stranica", ms: "memorijalna stranica", search: "pretraga" }[S.view] || "";
+    $("brand").innerHTML = `${ZNAK}<span class="wm"><b>ETERNIA</b>${sub ? `<small>${d ? sym(S.design, d.acc) : ""}${sub}</small>` : ""}</span>`;
+    $("brand").style.visibility = S.view === "home" ? "hidden" : "";
+    $("foot").hidden = S.view !== "home";
+  }
+  function go(v) { S.view = v; render(); window.scrollTo({ top: 0 }); }
+  function prog(step) {
+    const lab = ["Dizajn", "Podaci", "Grob", "Dijeljenje"];
+    return `<div class="prog"><span class="fill" style="width:${(step - 1) * 25}%"></span>${lab.map((l, i) => `<div class="${i < step ? "on" : ""} ${i === step - 1 ? "cur" : ""}"><i></i>${l}</div>`).join("")}</div>`;
+  }
+
+  const V = {};
+  V.home = () => `
+    <section class="hero">
+      <div class="lockup mob">${ZNAK}<span class="wordmark">ETERNIA</span><p class="tagline">Svjetlo uspomena koje nikada ne gasne.</p></div>
+      <div class="hero-txt">
+        <h1 class="script mob">Ljubav<br>živi vječno.</h1>
+        <span class="hdiv mob" aria-hidden="true">${HEART}</span>
+        <h1 class="h" style="display:none">Sjećanje koje ostaje.</h1>
+        <p class="lead dsk">Mjesto sjećanja, povezanosti i vječne ljubavi.</p>
+      </div>
+      <div class="hero-act">
+        <p class="lead2"><span class="mobi">Mjesto sjećanja, povezanosti i vječne ljubavi. </span>Obitelj i prijatelji ovdje pale svijeću, ostavljaju cvijet i dijele sjećanja, odakle god bili.</p>
+        <div class="stats" aria-label="Ukupno na Eterniji">
+          <div class="st">${IC.candle}<span><b>${fmt(totals().gori)} / ${fmt(totals().zap)}</b><small>gori / zapaljeno</small></span></div>
+          <div class="st">${IC.flower}<span><b>${fmt(totals().cvi)}</b><small>cvijeća ostavljeno</small></span></div>
+        </div>
+        <button class="cta" data-act="create">Kreiraj stranicu za pokojnika<span class="arr" aria-hidden="true">→</span></button>
+        <button class="cta light" data-act="search">${IC.search}Pronađi stranicu pokojnika</button>
+        <p class="login">Već imate račun? <button class="linkbtn" data-act="login">Prijavite se ›</button></p>
+      </div>
+    </section>
+    <section class="card-s" id="kako">
+      <h2>Kako funkcionira</h2>
+      <ol class="steps"><li><b>1</b><span>Odaberite dizajn</span></li><li><b>2</b><span>Unesite podatke i sliku</span></li><li><b>3</b><span>Podijelite s obitelji</span></li></ol>
+    </section>
+    <section class="card-s">
+      <h2>Na svakoj stranici možete</h2>
+      <div class="can">
+        <div><figure>${IC.candle}</figure><span>Zapaliti svijeću</span></div>
+        <div><figure>${IC.flower}</figure><span>Ostaviti cvijet</span></div>
+        <div><figure>${IC.paper}</figure><span>Napisati sjećanje</span></div>
+        <div><figure>${IC.bell}</figure><span>Primati podsjetnike</span></div>
+      </div>
+    </section>
+    <p class="sig script" aria-hidden="true">Jer uspomene povezuju.</p>`;
+
+  V.search = () => {
+    const q = S.sq;
+    return `
+    <button class="back" data-act="home">‹ Natrag</button>
+    <h1 class="h">Pronađi memorijalnu ili grobnu stranicu</h1>
+    <p class="note">Ispunite barem jedno polje. Za datume odaberite Datum ili Godina pa vrijednost namjestite kotačićem ili povlačenjem.</p>
+    <form id="sForm" novalidate style="display:grid;gap:14px">
+      <div class="row2">
+        <label class="fld" for="sIme">Ime<input id="sIme" value="${esc(q.ime)}" placeholder="npr. Ivan" autocomplete="off"></label>
+        <label class="fld" for="sPrez">Prezime<input id="sPrez" value="${esc(q.prez)}" placeholder="npr. Horvat" autocomplete="off"></label>
+      </div>
+      <span class="dplab">Rođenje</span>
+      ${dpHTML("rod", S.sqP.rod)}
+      <span class="dplab">Smrt</span>
+      ${dpHTML("smrt", S.sqP.smrt)}
+      <button class="cta" type="submit">${IC.search}Traži</button>
+    </form>
+    ${q.done ? searchResults() : ""}`;
+  };
+
+  function searchResults() {
+    const q = S.sq, f = x => fold(String(x || "").trim());
+    const ime = f(q.ime), prez = f(q.prez), yr = yearOf(q.rod), yd = yearOf(q.smrt);
+    const mine = MINE.people.map(p => ({ t: "MS", n: p.name, by: yearOf(p.born), dy: yearOf(p.died), pl: "vaša stranica", d: MINE.design, av: [initials(p.name)], mine: true }));
+    const ms = mine.concat(SAMPLE.filter(p => p.t === "MS"));
+    const msHit = ms.filter(p => {
+      const parts = f(p.n).split(/\s+/), first = parts[0], last = parts.slice(1).join(" ");
+      if (ime && !first.startsWith(ime)) return false;
+      if (prez && !last.split(/[\s-]+/).some(w => w.startsWith(prez)) && !last.startsWith(prez)) return false;
+      if (yr && p.by !== yr) return false;
+      if (yd && p.dy !== yd) return false;
+      return true;
+    });
+    const surn = new Set(msHit.map(p => f(p.n).split(/\s+/).slice(1).join(" ")));
+    const gsAll = (MINE.people.length ? [{ t: "GS", n: MINE.gsName, pl: "vaša stranica", d: MINE.design, av: MINE.people.slice(0, 3).map(p => initials(p.name)), cnt: MINE.people.length, mine: true }] : []).concat(SAMPLE.filter(p => p.t === "GS"));
+    const gsHit = gsAll.filter(g => { const fam = f(g.n).replace(/^obitelj\s+/, ""); return [...surn].some(s => s && fam.split(/[\s-]+/).includes(s)) || (prez && !ime && !yr && !yd && fam.split(/[\s-]+/).some(w => w.startsWith(prez))); });
+    const hits = msHit.concat(gsHit);
+    S.lastHits = hits;
+    if (!hits.length) return `<p class="empty">Nema stranica za zadane podatke. Provjerite pravopis ili upišite samo godinu umjesto cijelog datuma.</p>`;
+    return `<div class="sect">Pronađeno: ${hits.length}</div><ul class="results">${hits.map((p, i) => `
+      <li><button data-hit="${i}"><span class="av">${p.av.map(a => `<i>${esc(a)}</i>`).join("")}</span><span class="rmeta"><b>${esc(p.n)}</b><small>${esc(p.t === "MS" ? `${p.by || "?"}. – ${p.dy || "?"}. · ${p.pl}` : `${osobe(p.cnt)} · ${p.pl}`)}</small></span><span class="tag" style="background:${D[p.d].head}">${p.t === "MS" ? "memorijalna" : "grobna"}</span></button></li>`).join("")}</ul>`;
+  }
+
+  V.design = () => {
+    const c = COUNTRIES[S.country];
+    const list = S.more ? c.main.concat(c.more) : c.main;
+    return `
+    <button class="back" data-act="home">‹ Natrag</button>
+    ${prog(1)}
+    <h1 class="h">Odaberite dizajn</h1>
+    <label class="fld" for="country">Dolazite iz:
+      <select id="country">${Object.entries(COUNTRIES).map(([k, v]) => `<option value="${k}" ${k === S.country ? "selected" : ""}>${v.n}</option>`).join("")}</select>
+    </label>
+    <p class="note">Dizajn određuje i spomendane za podsjetnike.</p>
+    <div class="dgrid">${list.map(k => `
+      <button class="dcard" data-design="${k}" aria-pressed="${S.design === k}" aria-label="${D[k].n} dizajn">
+        <span class="mh" style="background:linear-gradient(135deg, ${D[k].head}, color-mix(in srgb, ${D[k].head} 55%, #02070D))">${sym(k, D[k].acc)}ETERNIA</span>
+        <span class="cal">${D[k].cal}</span>
+      </button>`).join("")}</div>
+    ${S.more ? `<button class="addlink" data-act="less">− Prikaži samo osnovne dizajne</button>` : `<button class="addlink" data-act="more">+ Prikaži ostale dizajne</button>`}
+    <button class="cta" data-act="toPerson" ${S.design ? "" : "disabled"}>Dalje<span class="arr" aria-hidden="true">→</span></button>`;
+  };
+
+  V.person = () => {
+    const p = S.draft, editing = S.editIdx !== null, first = !editing && S.people.length === 0;
+    return `
+    <button class="back" data-act="${S.people.length ? "gsedit" : "design"}">‹ Natrag</button>
+    ${prog(2)}
+    <h1 class="h">${editing ? "Uredi podatke" : first ? "Podaci o pokojniku" : "Dodaj osobu na grob"}</h1>
+    <button class="photo" data-act="pick" aria-label="Dodaj sliku">${p.photo ? `<img class="${filt(p.filter)}" src="${p.photo}" alt="Odabrana slika">` : `<span class="plus"><b>+</b>Slika</span>`}</button>
+    <div class="chips">${[["std", "Standard"], ["bw", "Crno-bijelo"], ["old", "Stara fotografija"]].map(([k, l]) => `<button class="chip" data-filter="${k}" aria-pressed="${p.filter === k}">${l}</button>`).join("")}</div>
+    <label class="fld" for="fName">a) Ime i prezime *<input id="fName" value="${esc(p.name)}" placeholder="npr. Ivan Horvat"></label>
+    <span class="dplab">b) Rođenje</span>
+    ${dpHTML("born", p.bornP)}
+    <span class="dplab">c) Smrt</span>
+    ${dpHTML("died", p.diedP)}
+    <p class="hint">Vrijednosti mijenjajte kotačićem miša ili povlačenjem prstom gore-dolje. Ako ne znate točan datum, odaberite Godina ili Nepoznato. Puni datum omogućuje podsjetnik na godišnjicu.</p>
+    <label class="fld" for="fText">d) Rečenica koja opisuje osobu<textarea id="fText" rows="2" maxlength="150" placeholder="npr. Dobar otac i djed, uvijek s osmijehom.">${esc(p.text)}</textarea></label>
+    <div class="sect">e) Dodaj poseban datum</div>
+    <p class="hint">Datum bez godine, podsjetnik se ponavlja svake godine.</p>
+    ${p.special.map((s, i) => `
+      <div class="row3">
+        <label class="fld" for="sN${i}">Naziv<input id="sN${i}" value="${esc(s.n)}" placeholder="Imendan"></label>
+        <label class="fld" for="sD${i}">Datum<input id="sD${i}" value="${esc(s.d)}" placeholder="dd.mm."></label>
+        <button class="x" data-rmsp="${i}" aria-label="Ukloni datum">×</button>
+      </div>`).join("")}
+    <button class="addlink" data-act="addSpecial">+ Dodaj ${p.special.length ? "još jedan " : ""}datum (imendan, slava, godišnjica braka…)</button>
+    <p class="err" id="perr" hidden></p>
+    ${editing ? `<div class="btnrow"><button class="danger" data-act="askDelMS">Obriši</button><button class="cta th" data-act="savePerson">Spremi</button></div>` : `<button class="cta th" data-act="savePerson">Spremi</button>`}`;
+  };
+
+  V.gsedit = () => `
+    ${prog(3)}
+    ${S.banner ? `<div class="toastin">✓ ${esc(S.banner)}</div>` : ""}
+    <label class="fld" for="gsName">Naziv grobne stranice<input id="gsName" value="${esc(S.gsName)}"></label>
+    <p class="hint">Predloženo iz prezimena. Možete urediti (npr. Obitelj Kovač-Perić).</p>
+    <div class="sect">Osobe na ovom grobu</div>
+    ${S.people.map((p, i) => `
+      <button class="prow" data-editp="${i}" aria-label="Uredi ${esc(p.name)}">${avatar(p, 48)}<span class="m"><b>${esc(p.name)}</b><small>${esc(dateLine(p, true))}</small></span><span class="editb">${IC.edit.replace("<svg", '<svg width="20" height="20"')}</span></button>`).join("")}
+    <button class="dashed" data-act="addPerson">+ Dodaj osobu</button>
+    <div style="height:6px"></div>
+    <div class="btnrow"><button class="danger" data-act="askDelGS">Obriši</button><button class="cta th" data-act="toShare">Završi s izradom</button></div>`;
+
+  const APPS = [["WhatsApp", "#2F7A4A", "bubble"], ["Messenger", "#2F5BB8", "bubble"], ["Viber", "#5E4691", "bubble"], ["Telegram", "#2C76A8", "bubble"], ["SMS", "#46505A", "bubble"], ["E-mail", "#7A5E32", "mail"], ["Signal", "#2F5E99", "bubble"], ["Kopiraj link", "#3A3631", "link"]];
+  V.share = () => `
+    ${prog(4)}
+    <h1 class="h">Podijeli grobnu stranicu</h1>
+    <div class="preview"><span class="av">${S.people.slice(0, 3).map(p => avatar(p, 40)).join("")}</span><span class="rmeta"><b>${esc(S.gsName)}</b><small>grobna stranica · ${osobe(S.people.length)}</small></span></div>
+    <div class="apps">${APPS.map(([n, c, k]) => `<button class="app-t" data-app="${n}"><span style="background:${c}">${IC[k]}</span>${n}</button>`).join("")}</div>
+    <hr>
+    <h2>Ostavite znak pažnje</h2>
+    <p class="note" style="margin-top:-8px">Znak se postavlja na sve osobe na ovom grobu.</p>
+    <div class="tiles t2"><button class="tile" data-sign="c" data-cool="${ck("gs", "c")}">${IC.candle}Zapali svijeću</button><button class="tile" data-sign="f" data-cool="${ck("gs", "f")}">${IC.flower}Ostavi cvijet</button></div>
+    <button class="ghost" data-act="gs">Pogledaj grobnu stranicu</button>`;
+
+  V.gs = () => {
+    const sur = S.gsName.replace(/^Obitelj\s+/i, "");
+    const hasPrefix = /^Obitelj\s+/i.test(S.gsName);
+    return `
+    <div class="toolbar">${S.g.own ? `<button class="tbtn editb" data-act="gsedit" aria-label="Uredi grobnu stranicu">${IC.edit}</button>` : "<span></span>"}<button class="tbtn" data-act="map" aria-label="Navigacija do groba">${IC.map}</button></div>
+    <div class="center fam" style="margin-top:-18px">${hasPrefix ? "<small>Obitelj</small>" : ""}<b>${esc(sur)}</b><div class="note">${osobe(S.people.length)} na ovom grobu${S.g.place ? " · " + esc(S.g.place) : ""}</div></div>
+    <span class="rule" aria-hidden="true">${HEART}</span>
+    ${S.people.map((p, i) => `
+      <button class="prow" data-openms="${i}">${avatar(p, 48)}<span class="m"><b>${esc(p.name)}</b><small>${esc(dateLine(p, true))}</small>
+        <span class="cnt"><span>${IC.candle} ${fmt(p.gori)}/${fmt(p.zap)}</span><span>${IC.flower} ${fmt(p.cvi)}</span></span></span><span style="color:var(--gold-300);font-size:24px">›</span></button>`).join("")}
+    ${S.g.own ? `<button class="dashed" data-act="addPerson">+ Dodaj osobu</button>` : ""}
+    <div class="counters" style="margin-top:4px">
+      <div>${IC.candle}<b>${fmt(sum("gori"))}/${fmt(sum("zap"))}</b><small>gori/zapaljeno</small></div>
+      <div>${IC.flower}<b>${fmt(sum("cvi"))}</b><small>cvijeća ostavljeno</small></div>
+    </div>
+    <div class="tiles t2"><button class="tile" data-sign="c" data-cool="${ck("gs", "c")}">${IC.candle}Zapali svijeću</button><button class="tile" data-sign="f" data-cool="${ck("gs", "f")}">${IC.flower}Ostavi cvijet</button></div>
+    <button class="ghost" data-act="shareGS">Podijeli grobnu stranicu</button>
+    <button class="cta th" data-act="create">Kreiraj stranicu za svoje pokojnike</button>`;
+  };
+
+  V.ms = () => {
+    const p = S.people[S.msIdx];
+    const mems = p.mems, mi = Math.min(S.memIdx, Math.max(0, mems.length - 1));
+    return `
+    <div class="toolbar">${S.g.own ? `<button class="tbtn editb" data-editp="${S.msIdx}" aria-label="Uredi memorijalnu stranicu">${IC.edit}</button>` : "<span></span>"}<button class="tbtn" data-act="fav" aria-label="Prati stranicu" aria-pressed="${S.fav}">${IC.heart(S.fav)}</button></div>
+    <div class="msTop">
+      <div class="side">${IC.candle}<b>${fmt(p.gori)}/${fmt(p.zap)}</b><small>gori/zapaljeno</small></div>
+      <span class="ini portrait">${p.photo ? `<img class="${filt(p.filter)}" src="${p.photo}" alt="">` : esc(initials(p.name))}</span>
+      <div class="side">${IC.flower}<b>${fmt(p.cvi)}</b><small>cvijeća</small></div>
+    </div>
+    <div class="center" style="display:grid;gap:6px">
+      <h1 class="msname">${esc(p.name)}</h1>
+      ${dateLine(p, false) ? `<div class="dates">${esc(dateLine(p, false))}</div>` : ""}
+      <span class="rule" aria-hidden="true">${S.design ? sym(S.design, "currentColor") : HEART}</span>
+      ${p.text ? `<p class="quote">„${esc(p.text)}“</p>` : ""}
+    </div>
+    <div class="tiles t3">
+      <button class="tile" data-msign="c" data-cool="${ck("ms" + S.msIdx, "c")}">${IC.candle}Zapali</button>
+      <button class="tile" data-msign="f" data-cool="${ck("ms" + S.msIdx, "f")}">${IC.flower}Ostavi</button>
+      <button class="tile" data-act="write" data-cool="${ck("ms" + S.msIdx, "w")}">${IC.paper}Napiši</button>
+    </div>
+    <div class="mhead"><b>Sjećanja</b><small>${mems.length ? `${mi + 1} / ${mems.length}` : ""}</small></div>
+    ${mems.length ? `
+      <div class="mem"><div class="mtop"><span class="who">${esc(mems[mi].who)} – ${esc(mems[mi].rel)}</span><span class="when">${esc(mems[mi].d || "")}</span></div><div class="mbody"><p tabindex="0" id="memP">${esc(mems[mi].txt)}</p><span class="vbar" id="vbar" hidden><i></i></span></div></div>
+      <div class="slider"><button data-mem="-1" ${mi === 0 ? "disabled" : ""} aria-label="Novije sjećanje">‹</button><span class="track"><i style="width:${100 / mems.length}%;left:${(mi * 100) / mems.length}%"></i></span><button data-mem="1" ${mi >= mems.length - 1 ? "disabled" : ""} aria-label="Starije sjećanje">›</button></div>`
+      : `<p class="note">Još nema sjećanja. Budite prvi koji će napisati sjećanje.</p>`}
+    <button class="ghost" data-act="shareMS">Podijeli memorijalnu stranicu</button>
+    <button class="ghost" data-act="gs">Posjeti grobnu stranicu ove obitelji</button>
+    <button class="cta th" data-act="create">Kreiraj stranicu za svoje pokojnike</button>`;
+  };
+
+  let memTimer;
+  /* ukupno na platformi: ostale (izmišljene) stranice + demo Horvat + vaša stranica, raste dok palite svijeće */
+  const BASE = { gori: 187, zap: 3741, cvi: 1902 };
+  const totals = () => {
+    const all = (DEMO.horvat ? DEMO.horvat.people : []).concat(MINE.people);
+    return { gori: BASE.gori + all.reduce((a, p) => a + p.gori, 0), zap: BASE.zap + all.reduce((a, p) => a + p.zap, 0), cvi: BASE.cvi + all.reduce((a, p) => a + p.cvi, 0) };
+  };
+  /* najviše 3 znamenke: 999, 1.82K, 18.2K, 182K, 2.33M */
+  const fmt = n => {
+    if (n < 1000) return String(n);
+    const [v, u] = n < 1e6 ? [n / 1e3, "K"] : n < 1e9 ? [n / 1e6, "M"] : [n / 1e9, "B"];
+    return (v >= 100 ? Math.floor(v) : v >= 10 ? Math.floor(v * 10) / 10 : Math.floor(v * 100) / 100) + u;
+  };
+  const COOL = 10000;
+  const cool = {};
+  const ck = (scope, k) => `${S.g.id}|${scope}|${k}`;
+  function applyCool() {
+    const now = Date.now();
+    document.querySelectorAll("[data-cool]").forEach(el => {
+      const end = cool[el.dataset.cool] || 0;
+      if (end <= now) return;
+      el.classList.add("cool"); el.disabled = true;
+      el.style.animationDelay = -(COOL - (end - now)) + "ms";
+      el.querySelectorAll("svg").forEach(s => s.style.animationDelay = el.style.animationDelay);
+      setTimeout(() => { el.classList.remove("cool"); el.disabled = false; el.style.animationDelay = ""; }, end - now);
+    });
+  }
+  function render() {
+    chrome();
+    $("view").classList.toggle("homeview", S.view === "home");
+    $("view").innerHTML = V[S.view]();
+    applyCool();
+    // sjećanja se sama pomiču svakih 10 s; nakon zadnjeg vraćaju se na najnovije
+    clearTimeout(memTimer);
+    if (S.view === "ms" && S.people[S.msIdx] && S.people[S.msIdx].mems.length > 1) {
+      memTimer = setTimeout(function tick() {
+        const busy = ["memScrim", "menuScrim", "authScrim", "picScrim", "galScrim"].some(id => !$(id).hidden) || !$("cam").hidden || document.activeElement === $("memP");
+        if (S.view !== "ms") return;
+        if (busy) { memTimer = setTimeout(tick, 10000); return; }
+        const n = S.people[S.msIdx].mems.length;
+        S.memIdx = (Math.min(S.memIdx, n - 1) + 1) % n;
+        render();
+      }, 10000);
+    }
+    const mp = $("memP");
+    if (mp) {
+      const bar = $("vbar"), th = bar.firstElementChild;
+      const upd = () => {
+        const over = mp.scrollHeight - mp.clientHeight;
+        bar.hidden = over <= 1; if (over <= 1) return;
+        const h = bar.clientHeight, tH = Math.max(10, h * mp.clientHeight / mp.scrollHeight);
+        th.style.height = tH + "px"; th.style.top = ((h - tH) * mp.scrollTop / over) + "px";
+      };
+      mp.addEventListener("scroll", upd); requestAnimationFrame(upd);
+    }
+    if (S.view === "search") {
+      $("sForm").addEventListener("submit", e => {
+        e.preventDefault();
+        const v = { ime: $("sIme").value, prez: $("sPrez").value, rod: fmtP(S.sqP.rod), smrt: fmtP(S.sqP.smrt) };
+        if (!v.ime.trim() && !v.prez.trim() && !v.rod && !v.smrt) { $("sPrez").focus(); return toast("Upišite barem ime, prezime ili godinu", true); }
+        S.sq = { ...v, done: true }; render();
+      });
+      document.querySelectorAll("[data-hit]").forEach(b => b.addEventListener("click", () => {
+        const h = S.lastHits[+b.dataset.hit];
+        const g = h.mine ? MINE : h.demo ? DEMO[h.demo] : null;
+        if (!g) return toast("Otvara se stranica: " + h.n + " (primjer – u demu su otvorene samo stranice obitelji Horvat)");
+        S.g = g; S.fav = false; S.memIdx = 0;
+        if (h.t === "MS") { const i = g.people.findIndex(p => p.name === h.n); if (i >= 0) { S.msIdx = i; return go("ms"); } }
+        go("gs");
+      }));
+    }
+  }
+
+  /* ---------- birač datuma: događaji ---------- */
+  const dpModel = id => (id === "born" || id === "died") ? S.draft[id + "P"] : S.sqP[id];
+  function dpSync(id) { if ((id === "born" || id === "died") && S.draft) S.draft[id] = fmtP(dpModel(id)); }
+  function dpPaint(id) {
+    const P = dpModel(id);
+    document.querySelectorAll(`.wh[data-dpid="${id}"]`).forEach(w => {
+      const part = w.dataset.part;
+      w.querySelector(".pv").textContent = dpLab(dpVal(P, part, -1));
+      w.querySelector(".cv").textContent = dpLab(P[part]);
+      w.querySelector(".nx").textContent = dpLab(dpVal(P, part, 1));
+      w.setAttribute("aria-valuenow", P[part]);
+    });
+  }
+  function dpStep(w, dir) {
+    const id = w.dataset.dpid, part = w.dataset.part, P = dpModel(id);
+    const v = dpVal(P, part, dir); if (v === "") return;
+    P[part] = v; P.d = Math.min(P.d, dim(P.m, P.y));
+    dpSync(id); dpPaint(id);
+  }
+  document.addEventListener("wheel", e => {
+    const w = e.target.closest && e.target.closest(".wh"); if (!w) return;
+    e.preventDefault();
+    w._acc = (w._acc || 0) + e.deltaY;
+    if (Math.abs(w._acc) >= 40) { dpStep(w, Math.sign(w._acc)); w._acc = 0; }
+  }, { passive: false });
+  let drag = null;
+  document.addEventListener("pointerdown", e => {
+    const w = e.target.closest && e.target.closest(".wh"); if (!w) return;
+    drag = { w, y0: e.clientY, moved: false, tgt: e.target };
+    try { w.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  document.addEventListener("pointermove", e => {
+    if (!drag) return;
+    let dy = drag.y0 - e.clientY;
+    while (dy >= 22) { dpStep(drag.w, 1); drag.y0 -= 22; dy -= 22; drag.moved = true; }
+    while (dy <= -22) { dpStep(drag.w, -1); drag.y0 += 22; dy += 22; drag.moved = true; }
+  });
+  document.addEventListener("pointerup", () => {
+    if (!drag) return;
+    if (!drag.moved) { if (drag.tgt.classList.contains("pv")) dpStep(drag.w, -1); else if (drag.tgt.classList.contains("nx")) dpStep(drag.w, 1); }
+    drag = null;
+  });
+  document.addEventListener("pointercancel", () => { drag = null; });
+  document.addEventListener("keydown", e => {
+    const w = e.target.closest && e.target.closest(".wh"); if (!w) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); dpStep(w, 1); }
+    if (e.key === "ArrowUp") { e.preventDefault(); dpStep(w, -1); }
+  });
+
+  let delWhat = null;
+  $("delYes").addEventListener("click", () => {
+    close("delScrim");
+    if (delWhat === "ms" && S.editIdx !== null) {
+      const name = S.people[S.editIdx].name;
+      S.people.splice(S.editIdx, 1); S.editIdx = null; S.draft = null;
+      if (S.people.length) { S.banner = name + " je obrisan/a s groba"; return go("gsedit"); }
+      S.g = MINE = newMine(); go("home"); return toast("Obrisana je memorijalna stranica i grobna stranica, jer na njoj više nema osoba");
+    }
+    if (delWhat === "gs") { const n = S.gsName; S.g = MINE = newMine(); go("home"); toast(n + " je obrisana"); }
+  });
+
+  let pendingCreate = false;
+  function startCreate() {
+    if (!S.logged) { setMode("login", "Za kreiranje stranice potreban je račun. Nakon prijave nastavljate s odabirom dizajna."); pendingCreate = true; open("authScrim"); return; }
+    S.g = MINE = newMine();
+    Object.assign(S, { more: false, banner: "", editIdx: null, draft: blankPerson(), fav: false });
+    go("design");
+  }
+
+  function readDraft() {
+    const p = S.draft; if (!p || S.view !== "person") return;
+    p.name = $("fName").value; p.born = fmtP(p.bornP); p.died = fmtP(p.diedP); p.text = $("fText").value;
+    p.special.forEach((s, i) => { s.n = $("sN" + i).value; s.d = $("sD" + i).value; });
+  }
+  function perr(msg, id) { const e = $("perr"); e.textContent = msg; e.hidden = false; if (id) $(id).focus(); }
+
+  function savePerson() {
+    readDraft();
+    const p = S.draft;
+    $("perr").hidden = true;
+    if (!p.name.trim()) return perr("Upišite ime i prezime.", "fName");
+    const B = p.bornP, Dd = p.diedP;
+    if (B.mode !== "none" && Dd.mode !== "none") {
+      const before = Dd.y < B.y || (B.mode === "full" && Dd.mode === "full" && Dd.y === B.y && (Dd.m < B.m || (Dd.m === B.m && Dd.d < B.d)));
+      if (before) return perr("Datum smrti ne može biti prije datuma rođenja.");
+    }
+    for (let i = 0; i < p.special.length; i++) {
+      const s = p.special[i];
+      if (!s.n.trim() && !s.d.trim()) continue;
+      if (!s.n.trim()) return perr("Upišite naziv posebnog datuma (npr. Imendan).", "sN" + i);
+      if (!DM_RE.test(s.d)) return perr("Poseban datum upišite bez godine, kao dd.mm. (npr. 27.12.)", "sD" + i);
+    }
+    p.special = p.special.filter(s => s.n.trim());
+    p.name = p.name.trim();
+    if (S.editIdx !== null) { S.people[S.editIdx] = p; S.banner = "Podaci za " + p.name + " su spremljeni"; }
+    else {
+      const first = S.people.length === 0;
+      S.people.push(p);
+      if (first) { S.gsName = "Obitelj " + p.name.split(/\s+/).slice(-1)[0]; S.banner = "Grobna stranica je automatski kreirana"; }
+      else S.banner = p.name + " je dodan/a na grob";
+    }
+    S.editIdx = null; S.draft = null;
+    go("gsedit");
+  }
+
+  function sign(kind, idx) {
+    const targets = idx === undefined ? S.people : [S.people[idx]];
+    targets.forEach(p => { if (kind === "c") { p.zap++; p.gori++; } else p.cvi++; });
+    cool[idx === undefined ? ck("gs", kind) : ck("ms" + idx, kind)] = Date.now() + COOL;
+    const what = kind === "c" ? "Svijeća je zapaljena" : "Cvijet je ostavljen";
+    toast(idx === undefined ? `${what} za sve osobe na grobu` : `${what} za ${S.people[idx].name}`);
+    render();
+  }
+
+  function shareLink(kind) {
+    const slug = fold(kind === "ms" ? S.people[S.msIdx].name : S.gsName).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return `https://eternia.primjer/${kind === "ms" ? "m" : "g"}/${slug}?od=${fold(S.user)}`;
+  }
+
+  document.addEventListener("click", e => {
+    const t = e.target.closest("button"); if (!t || !$("app").contains(t) && !t.closest(".sheet")) return;
+    const a = t.dataset.act;
+    if (a) {
+      if (S.view === "person" && a !== "pick") readDraft();
+      switch (a) {
+        case "create": return startCreate();
+        case "login": setMode("login"); pendingCreate = false; return open("authScrim");
+        case "home": return go("home");
+        case "search": return go("search");
+        case "more": S.more = true; return render();
+        case "less": S.more = false; if (S.design && !COUNTRIES[S.country].main.includes(S.design)) S.design = null; return render();
+        case "toPerson": if (!S.draft) S.draft = blankPerson(); S.editIdx = null; return go("person");
+        case "design": return go("design");
+        case "pick": readDraft(); return open("picScrim");
+        case "addSpecial": S.draft.special.push({ n: "", d: "" }); render(); return $("sN" + (S.draft.special.length - 1)).focus();
+        case "savePerson": return savePerson();
+        case "askDelMS": {
+          const p = S.people[S.editIdx];
+          $("delTitle").textContent = "Obrisati memorijalnu stranicu?";
+          $("delText").textContent = `Briše se stranica za ${p.name} sa svim sjećanjima, svijećama i cvijećem.` + (S.people.length === 1 ? " To je jedina osoba na grobu, pa se briše i grobna stranica." : "") + " Ovo se ne može poništiti.";
+          delWhat = "ms"; return open("delScrim");
+        }
+        case "askDelGS": {
+          $("delTitle").textContent = "Obrisati grobnu stranicu?";
+          $("delText").textContent = `Briše se ${S.gsName} i sve memorijalne stranice na njoj (${osobe(S.people.length)}), sa svim sjećanjima, svijećama i cvijećem. Ovo se ne može poništiti.`;
+          delWhat = "gs"; return open("delScrim");
+        }
+        case "gsedit": S.banner = ""; return go("gsedit");
+        case "addPerson": S.editIdx = null; S.draft = blankPerson(); S.banner = ""; return go("person");
+        case "toShare": { const n = $("gsName").value.trim(); if (n) S.gsName = n; return go("share"); }
+        case "gs": return go("gs");
+        case "map": return toast("Navigacija do groba: lokacija groba još nije upisana (simulacija)");
+        case "shareGS": return toast("Otvara se izbornik za dijeljenje s poveznicom " + shareLink("gs"));
+        case "shareMS": return toast("Otvara se izbornik za dijeljenje s poveznicom " + shareLink("ms"));
+        case "fav": S.fav = !S.fav; render(); return toast(S.fav ? "Pratite ovu stranicu – stizat će vam podsjetnici" : "Više ne pratite ovu stranicu");
+        case "write": $("memFor").textContent = "Za: " + S.people[S.msIdx].name + " · objavljuje se pod imenom " + S.user; $("memTxt").value = ""; $("memCnt").textContent = "0 / 300"; return open("memScrim");
+      }
+    }
+    if (t.dataset.dpmode) {
+      if (S.view === "person") readDraft();
+      const box = t.closest(".dp"), id = box.dataset.dp;
+      dpModel(id).mode = t.dataset.dpmode; dpSync(id);
+      box.outerHTML = dpHTML(id, dpModel(id));
+      return;
+    }
+    if (t.dataset.design) { S.design = t.dataset.design; return render(); }
+    if (t.dataset.filter) { readDraft(); S.draft.filter = t.dataset.filter; return render(); }
+    if (t.dataset.rmsp !== undefined) { readDraft(); S.draft.special.splice(+t.dataset.rmsp, 1); return render(); }
+    if (t.dataset.editp !== undefined) { const i = +t.dataset.editp; S.editIdx = i; S.draft = JSON.parse(JSON.stringify(S.people[i])); S.banner = ""; return go("person"); }
+    if (t.dataset.app) {
+      const link = shareLink("gs");
+      if (t.dataset.app === "Kopiraj link") {
+        try { navigator.clipboard.writeText(link).then(() => toast("Poveznica je kopirana: " + link), () => toast("Poveznica: " + link)); }
+        catch (_) { toast("Poveznica: " + link); }
+        return;
+      }
+      return toast(`Otvara se ${t.dataset.app} s poveznicom na „${S.gsName}“ (simulacija)`);
+    }
+    if (t.dataset.sign) return sign(t.dataset.sign);
+    if (t.dataset.msign) return sign(t.dataset.msign, S.msIdx);
+    if (t.dataset.openms !== undefined) { S.msIdx = +t.dataset.openms; S.memIdx = 0; S.fav = false; return go("ms"); }
+    if (t.dataset.mem) { S.memIdx += +t.dataset.mem; return render(); }
+  });
+
+  document.addEventListener("change", e => {
+    if (e.target.id === "country") {
+      S.country = e.target.value;
+      S.design = null;   // nova država: korisnik mora ponovno odabrati dizajn
+      S.more = false;
+      render();
+    }
+  });
+
+  $("fileIn").addEventListener("change", e => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    if (!f.type.startsWith("image/")) return toast("Odaberite sliku (JPG, PNG…)", true);
+    const r = new FileReader();
+    r.onload = () => { S.draft.photo = r.result; render(); };
+    r.readAsDataURL(f);
+  });
+
+  $("memTxt").addEventListener("input", e => { $("memCnt").textContent = e.target.value.length + " / 300"; });
+  $("memSave").addEventListener("click", () => {
+    const txt = $("memTxt").value.trim();
+    if (!txt) { $("memTxt").focus(); return toast("Upišite tekst sjećanja", true); }
+    const now = new Date();
+    S.people[S.msIdx].mems.unshift({ who: S.user, rel: $("memRel").value, txt, d: `${now.getDate()}. ${now.getMonth() + 1}. ${now.getFullYear()}.` });
+    cool[ck("ms" + S.msIdx, "w")] = Date.now() + COOL;
+    S.memIdx = 0; close("memScrim"); render(); toast("Sjećanje je objavljeno");
+  });
+
+  /* ---------- prijava ---------- */
+  let mode = "login";
+  function setMode(m, reason) {
+    mode = m;
+    $("authTitle").textContent = m === "login" ? "Prijava" : "Registracija";
+    $("authSubmitTxt").textContent = m === "login" ? "Prijavite se" : "Registrirajte se";
+    $("switchTxt").textContent = m === "login" ? "Nemate račun?" : "Već imate račun?";
+    $("switchBtn").textContent = m === "login" ? "Registrirajte se ›" : "Prijavite se ›";
+    $("pw").autocomplete = m === "login" ? "current-password" : "new-password";
+    $("forgot").hidden = m !== "login";
+    $("authSub").textContent = reason || (m === "login" ? "Mjesto sjećanja, povezanosti i vječne ljubavi." : "Otvorite račun i sačuvajte uspomene na svoje najdraže.");
+  }
+  function loggedIn(name, how) {
+    S.logged = true; if (name) S.user = name;
+    close("authScrim");
+    pendingCreate = false;
+    toast(how + " – nastavljate s odabirom dizajna");
+    startCreate();
+  }
+  $("switchBtn").addEventListener("click", () => setMode(mode === "login" ? "register" : "login", $("authSub").textContent.startsWith("Za kreiranje") ? $("authSub").textContent : null));
+  document.querySelectorAll("[data-sso]").forEach(b => b.addEventListener("click", () => loggedIn(null, "Prijavljeni ste preko " + b.dataset.sso + " računa (simulacija)")));
+  $("pwEye").innerHTML = EYE_OFF;
+  $("pwEye").addEventListener("click", () => {
+    const show = $("pw").type === "password";
+    $("pw").type = show ? "text" : "password";
+    $("pwEye").innerHTML = show ? EYE : EYE_OFF;
+    $("pwEye").setAttribute("aria-pressed", show);
+    $("pwEye").setAttribute("aria-label", show ? "Sakrij lozinku" : "Prikaži lozinku");
+  });
+  $("forgot").addEventListener("click", () => toast("Poslat ćemo vam poveznicu za novu lozinku (simulacija)"));
+  $("authForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const em = $("em").value.trim();
+    if (!/^\S+@\S+\.\S+$/.test(em)) { $("em").focus(); return toast("Upišite ispravnu e-mail adresu, npr. ime.prezime@primjer.hr", true); }
+    if ($("pw").value.length < 6) { $("pw").focus(); return toast("Lozinka mora imati barem 6 znakova", true); }
+    const nm = em.split("@")[0].split(/[._-]/)[0];
+    loggedIn(nm ? nm[0].toUpperCase() + nm.slice(1) : null, (mode === "login" ? "Prijavljeni ste" : "Račun je otvoren") + " (simulacija)");
+  });
+
+  $("menuBtn").addEventListener("click", () => {
+    const items = [S.logged ? ["logout", "Odjava (" + S.user + ")"] : ["login", "Prijava / registracija"], ["home", "Naslovna"], ["search", "Pronađi memorijalnu ili grobnu stranicu"]];
+    if (MINE.people.length) items.push(["gs", "Moja grobna stranica: " + MINE.gsName]);
+    items.push(["create", "Kreiraj novu stranicu"]);
+    items.push(["reset", "Ponovi simulaciju od početka"]);
+    items.push(["@naslovnice.html", "Primjeri: alternativne naslovnice (glasanje)"], ["@smjerovi.html", "Primjeri: smjerovi MS i GS"], ["@okviri.html", "Primjeri: fotografija i okvir"]);
+    $("menuList").innerHTML = items.map(([k, l]) => `<li><button data-menu="${k}" class="${k[0] === "@" ? "ext" : ""}">${esc(l)}</button></li>`).join("");
+    open("menuScrim");
+  });
+  $("menuList").addEventListener("click", e => {
+    const b = e.target.closest("[data-menu]"); if (!b) return;
+    close("menuScrim");
+    const k = b.dataset.menu;
+    if (k[0] === "@") { location.href = k.slice(1); return; }
+    if (k === "home") go("home");
+    else if (k === "gs") { S.g = MINE; go("gs"); }
+    else if (k === "search") go("search");
+    else if (k === "create") startCreate();
+    else if (k === "login") { setMode("login"); pendingCreate = false; open("authScrim"); }
+    else if (k === "logout") { S.logged = false; go("home"); toast("Odjavljeni ste (simulacija)"); }
+    else if (k === "reset") { S.g = MINE = newMine(); const f = fresh(); delete f.design; delete f.people; delete f.gsName; Object.assign(S, f); go("home"); toast("Simulacija je pokrenuta ispočetka"); }
+  });
+  $("brand").addEventListener("click", () => go("home"));
+  document.querySelectorAll("[data-info]").forEach(b => b.addEventListener("click", () => toast(b.dataset.info + " – stranica još nije izrađena")));
+  /* ---------------- simulacija galerije i fotoaparata ---------------- */
+  function face(o) {
+    const sk = o.skin, hr = o.hair;
+    let back = "", front = "", extra = "";
+    if (o.style === "bun") {
+      back = `<circle cx="100" cy="44" r="20" fill="${hr}"/><ellipse cx="100" cy="96" rx="50" ry="56" fill="${hr}"/>`;
+      front = `<path d="M55 104C52 48 148 48 145 104C138 82 118 70 100 74C82 70 62 82 55 104Z" fill="${hr}"/>`;
+    } else if (o.style === "short") {
+      front = `<path d="M55 98C52 46 148 46 145 98C134 74 112 68 100 70C82 68 66 76 55 98Z" fill="${hr}"/>`;
+    } else if (o.style === "bald") {
+      front = `<path d="M55 112C52 92 58 80 64 76C62 92 60 100 60 114Z" fill="${hr}"/><path d="M145 112C148 92 142 80 136 76C138 92 140 100 140 114Z" fill="${hr}"/>`;
+    }
+    if (o.mustache) extra += `<path d="M84 132C90 126 97 127 100 130C103 127 110 126 116 132C108 134 104 133 100 132C96 133 92 134 84 132Z" fill="${hr}"/>`;
+    if (o.beard) extra += `<path d="M58 112C60 160 82 166 100 166C118 166 140 160 142 112C134 140 120 146 100 146C80 146 66 140 58 112Z" fill="${hr}"/>`;
+    if (o.glasses) extra += `<g fill="none" stroke="#3A3A3A" stroke-width="2.4"><circle cx="82" cy="104" r="11"/><circle cx="118" cy="104" r="11"/><path d="M93 104h14M71 102l-14-3M129 102l14-3"/></g>`;
+    if (o.earrings) extra += `<circle cx="57" cy="124" r="3.2" fill="#D9C27A"/><circle cx="143" cy="124" r="3.2" fill="#D9C27A"/>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 230"><defs><radialGradient id="g" cx="50%" cy="32%" r="78%"><stop offset="0" stop-color="${o.bg1}"/><stop offset="1" stop-color="${o.bg2}"/></radialGradient><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient></defs>
+      <rect width="200" height="230" fill="url(#g)"/>${back}
+      <path d="M14 230C20 178 58 160 100 158C142 160 180 178 186 230Z" fill="${o.cloth}"/>
+      <path d="M82 160L100 196L118 160Z" fill="${o.shirt}"/>
+      <rect x="86" y="138" width="28" height="26" rx="8" fill="${sk}"/><rect x="86" y="138" width="28" height="26" fill="url(#s)"/>
+      <ellipse cx="57" cy="108" rx="7" ry="12" fill="${sk}"/><ellipse cx="143" cy="108" rx="7" ry="12" fill="${sk}"/>
+      <ellipse cx="100" cy="104" rx="44" ry="53" fill="${sk}"/>
+      <ellipse cx="78" cy="124" rx="9" ry="6" fill="#E07A6A" opacity=".18"/><ellipse cx="122" cy="124" rx="9" ry="6" fill="#E07A6A" opacity=".18"/>
+      ${front}
+      <path d="M72 92q10-5 19 0M109 92q10-5 19 0" fill="none" stroke="${o.brow}" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="82" cy="104" rx="4" ry="3.2" fill="#2F2622"/><ellipse cx="118" cy="104" rx="4" ry="3.2" fill="#2F2622"/>
+      <path d="M75 112q7 3 14 0M111 112q7 3 14 0" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="1.5"/>
+      <path d="M100 106q-4 14-7 18q4 3 10 1" fill="none" stroke="#B07D62" stroke-width="2" stroke-linecap="round"/>
+      <path d="M88 138q12 7 24 0" fill="none" stroke="#9A5A4E" stroke-width="2.6" stroke-linecap="round"/>
+      ${extra}</svg>`;
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  }
+  const IMG_M = face({ skin: "#E3BC9C", hair: "#B4B4B0", brow: "#8E8E8A", style: "short", mustache: true, cloth: "#33404E", shirt: "#ECE7DD", bg1: "#E7DFD2", bg2: "#A9A08F" });
+  const IMG_Z = face({ skin: "#EDCAAE", hair: "#E3E3E0", brow: "#B9B9B4", style: "bun", earrings: true, cloth: "#7E4A5A", shirt: "#F1E8DC", bg1: "#DCE3E8", bg2: "#93A3AF" });
+  const IMG_CAM = face({ skin: "#DDB495", hair: "#9C9C98", brow: "#6F6F6B", style: "bald", glasses: true, beard: true, cloth: "#4B5A3E", shirt: "#E6E1D6", bg1: "#D9E2D3", bg2: "#7F8D78" });
+  const IMG_J = face({ skin: "#DDB492", hair: "#8A8A86", brow: "#5E5E5A", style: "short", mustache: true, cloth: "#4A4038", shirt: "#DCD3C2", bg1: "#E6DCC8", bg2: "#9C8F78" });
+  const P = o => Object.assign(blankPerson(), o);
+  DEMO.horvat = { id: "horvat", design: "kat", gsName: "Obitelj Horvat", own: false, place: "Zagreb, Mirogoj", people: [
+    P({ name: "Ivan Horvat", born: "12. 3. 1938.", died: "5. 11. 2019.", text: "Dobar otac i djed, uvijek s osmijehom i riječi utjehe.", photo: IMG_M, filter: "bw",
+        special: [{ n: "Imendan", d: "27. 12." }], zap: 48, gori: 6, cvi: 21, mems: [
+        { who: "Petra", rel: "unuka", d: "1. 11. 2025.", txt: "Djede, i danas osjetim miris tvoje radionice kad prođem pored kuće. Hvala ti za sva ljeta na moru i za strpljenje kad si me učio voziti bicikl." },
+        { who: "Marko", rel: "sin", d: "5. 11. 2024.", txt: "Tata, tvoja mirnoća i danas me vodi. Nedostaješ nam za svakim nedjeljnim ručkom." },
+        { who: "Ana", rel: "susjeda", d: "12. 4. 2024.", txt: "Uvijek je imao vremena za kratku riječ i pomoć oko vrta." }] }),
+    P({ name: "Marija Horvat", born: "2. 7. 1941.", died: "2022.", text: "Majka koja je sve okupljala za istim stolom.", photo: IMG_Z, filter: "bw",
+        zap: 37, gori: 5, cvi: 15, mems: [
+        { who: "Petra", rel: "unuka", d: "2. 7. 2026.", txt: "Bako, tvoje palačinke i priče prije spavanja ostaju najljepše uspomene mog djetinjstva." },
+        { who: "Ivana", rel: "snaha", d: "1. 11. 2025.", txt: "Hvala vam što ste me primili kao kćer." }] }),
+    P({ name: "Josip Horvat", born: "1912.", died: "1979.", text: "Kovač i graditelj, čovjek od riječi.", photo: IMG_J, filter: "old",
+        zap: 26, gori: 2, cvi: 12, mems: [
+        { who: "Marko", rel: "unuk", d: "1. 11. 2025.", txt: "Pradjede, kovačnica u kojoj si radio još stoji. Pričamo djeci o tebi." }] }),
+  ] };
+
+  $("optGal").addEventListener("click", () => {
+    close("picScrim");
+    $("galGrid").innerHTML =
+      `<button data-img="M"><img src="${IMG_M}" alt="">Slika M.jpg</button><button data-img="Z"><img src="${IMG_Z}" alt="">Slika Ž.jpg</button>` +
+      `<span><span class="ph" style="display:block"></span></span><span><span class="ph" style="display:block"></span></span><span><span class="ph" style="display:block"></span></span><span><span class="ph" style="display:block"></span></span>`;
+    open("galScrim");
+  });
+  $("galGrid").addEventListener("click", e => {
+    const b = e.target.closest("[data-img]"); if (!b) return;
+    usePhoto(b.dataset.img === "M" ? IMG_M : IMG_Z, b.dataset.img === "M" ? "Slika M.jpg" : "Slika Ž.jpg");
+    close("galScrim");
+  });
+  $("optFile").addEventListener("click", () => { close("picScrim"); $("fileIn").click(); });
+  function usePhoto(src, label) { S.draft.photo = src; render(); toast(label + " je dodana. Odaberite filter ispod slike."); }
+
+  function camLive() {
+    $("camImg").src = IMG_CAM; $("vf").classList.remove("frozen");
+    $("camFocus").hidden = false; $("camLive").hidden = false; $("camDone").hidden = true;
+  }
+  $("optCam").addEventListener("click", () => { close("picScrim"); camLive(); $("cam").hidden = false; });
+  $("shutter").addEventListener("click", () => {
+    const f = $("flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
+    $("vf").classList.add("frozen"); $("camFocus").hidden = true;
+    $("camLive").hidden = true; $("camDone").hidden = false;
+  });
+  $("camRetake").addEventListener("click", camLive);
+  $("camCancel").addEventListener("click", () => { $("cam").hidden = true; });
+  $("camUse").addEventListener("click", () => { $("cam").hidden = true; usePhoto(IMG_CAM, "Fotografija"); });
+  document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", () => close(b.dataset.close)));
+
+  for (const id of ["menuScrim", "memScrim", "picScrim", "galScrim", "delScrim"]) $(id).addEventListener("click", e => { if (e.target.id === id) close(id); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { ["authScrim", "menuScrim", "memScrim", "picScrim", "galScrim", "delScrim"].forEach(close); $("cam").hidden = true; } });
+
+  /* ?prijava otvara izravno ekran prijave (za brzi pregled dizajna) */
+  if (/[?&]prijava\b/.test(location.search)) { setMode("login"); open("authScrim"); }
+  render();
+})();
+</script>
+</body>
+</html>

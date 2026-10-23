@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#02070D">
+<title>Eternia · smjerovi MS i GS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+/* Tri noćna smjera za MS (memorijalna stranica) i GS (stranica grobnog mjesta).
+   Isti sadržaj, različiti naglasak, pozadina i scena. GS koristi laganu sliku (< 70 kB) zbog QR otvaranja na 3G. */
+:root {
+  --bg: #02070D; --ink: #ECEAE6; --muted: #BDBAB4; --soft: rgba(255,255,255,.05);
+  --line: rgba(232,214,190,.22); --line-strong: rgba(232,214,190,.38);
+  --gold-50: #F4DBA6; --gold-300: #E6C794; --gold-500: #D9AE6B;
+  --gold-text: linear-gradient(160deg, #F4DBA6 0%, #D9AE6B 55%, #A8773D 100%);
+  --gold-btn: linear-gradient(90deg, #C98F45 0%, #BC843D 45%, #D49F55 80%, #E4B66C 100%);
+  --gold-sheen: linear-gradient(180deg, rgba(255,243,214,.45) 0%, rgba(255,243,214,.05) 45%, rgba(58,34,8,0) 75%, rgba(58,34,8,.35) 100%);
+  --brand: "Cormorant Garamond", Georgia, serif; --display: "EB Garamond", Georgia, serif; --script: "Allura", cursive; --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--bg); }
+body { margin: 0; color: var(--ink); font: 18px/1.55 var(--body); -webkit-font-smoothing: antialiased; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2.5px solid var(--gold-300); outline-offset: 3px; }
+
+.top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: space-between; padding: 10px max(18px, env(safe-area-inset-right)) 10px max(18px, env(safe-area-inset-left)); background: rgba(2,7,13,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.top .brand img { width: 36px; }
+.top .brand b { font: 600 20px/1 var(--brand); letter-spacing: .3em; background: var(--gold-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.top nav { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+.top nav a { white-space: nowrap; }
+.top nav a { color: var(--muted); text-decoration: none; font-size: 16px; padding: 10px 12px; border-radius: 12px; min-height: 44px; display: inline-flex; align-items: center; }
+.top nav a[aria-current] { color: var(--gold-300); background: var(--soft); }
+
+.controls, .stage, .overview { max-width: 1180px; margin: auto; padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
+.controls { padding-top: 26px; }
+h1 { font: 600 clamp(34px, 5vw, 52px)/1.05 var(--display); color: var(--gold-50); margin: 0 0 10px; }
+.controls p { max-width: 75ch; margin: 0 0 14px; }
+.switches, .view-switch { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.switches button, .view-switch button { border: 1px solid var(--line-strong); background: rgba(10,15,21,.8); color: var(--ink); border-radius: 999px; padding: 10px 18px; min-height: 50px; font-weight: 700; display: inline-flex; gap: 10px; align-items: center; }
+.switches button i { width: 16px; height: 16px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 10px var(--dot); }
+.switches button[aria-pressed="true"], .view-switch button[aria-pressed="true"] { background: var(--gold-sheen), var(--gold-btn); color: #24180B; border-color: rgba(247,223,174,.55); }
+.direction-note { padding: 16px 18px; border-radius: 18px; background: rgba(10,15,21,.8); border: 1px solid var(--line); margin: 8px 0 18px; }
+.direction-note strong { display: block; font: 600 24px var(--display); color: var(--gold-50); }
+.direction-note span { color: var(--muted); }
+.view-switch { display: none; }
+@media (max-width: 779px) { .view-switch { display: flex; } }
+
+.stage { padding-bottom: 40px; }
+.prototype-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (min-width: 780px) { .prototype-wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); } .phone[hidden] { display: block !important; } }
+
+/* ---------- telefon (tema ovisi o smjeru) ---------- */
+.phone { --pbg: #050B14; --acc: #E6C794; --acc2: #D9AE6B; --acc-soft: rgba(217,174,107,.14); --card: rgba(12,18,26,.82); --pline: rgba(232,214,190,.22); --scene: url("img/svijeca-lite-480.webp"); --scenepos: center 46%;
+  width: 100%; max-width: 460px; margin: 0 auto; border: 1px solid var(--pline); border-radius: 30px; overflow: hidden; background: var(--pbg); box-shadow: 0 20px 60px rgba(0,0,0,.55); color: var(--ink); }
+.phone.nebo { --pbg: #030814; --acc: #C9D6EA; --acc2: #9FB4D6; --acc-soft: rgba(159,180,214,.14); --card: rgba(10,16,30,.85); --pline: rgba(190,206,232,.22); --scene: url("img/mlijecni-put-507.webp"); --scenepos: center 38%; }
+.phone.mjesec { --pbg: #0B0914; --acc: #EDE3C8; --acc2: #CDBF9A; --acc-soft: rgba(237,227,200,.12); --card: rgba(20,16,32,.82); --pline: rgba(237,227,200,.2); --scene: url("img/mjesecina-502.webp"); --scenepos: center 46%; }
+.phone-header { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--pline); }
+.phone-header img { width: 34px; }
+.wordmark { font: 600 20px/1 var(--brand); letter-spacing: .3em; color: var(--acc); }
+.eyebrow { font-size: 14px; color: var(--muted); margin-left: auto; text-align: right; }
+.hero { position: relative; height: 210px; background: var(--scene) var(--scenepos) / cover no-repeat; display: flex; align-items: flex-end; padding: 16px 20px; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, var(--pbg) 100%); }
+.hero span:empty { display: none; }
+.hero span { position: relative; z-index: 1; font: 400 38px/1 var(--script); color: var(--acc); text-shadow: 0 2px 14px rgba(0,0,0,.8); }
+.page-content { padding: 6px 22px 26px; }
+.person { text-align: center; padding: 0 0 8px; margin-top: -70px; position: relative; z-index: 2; }
+.portrait { width: 116px; height: 132px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 12px; background: radial-gradient(circle at 50% 35%, #1B2433, #0B1018); color: var(--acc); font: 600 46px var(--display); border: 2px solid var(--acc2); box-shadow: 0 0 0 6px var(--acc-soft), 0 0 40px var(--acc-soft); }
+h2 { font: 600 34px/1.1 var(--display); color: var(--acc); margin: 0 0 6px; }
+h3 { font: 600 26px/1.15 var(--display); color: var(--acc); margin: 0 0 12px; }
+p { margin: 0 0 12px; }
+.dates { color: var(--muted); font-weight: 600; }
+.quote { font: italic 500 23px/1.3 var(--display); margin: 10px 0 0; }
+.rule { display: flex; align-items: center; gap: 12px; margin: 22px 0; color: var(--acc2); }
+.rule::before, .rule::after { content: ""; flex: 1; border-top: 1px solid var(--pline); }
+.rule svg { width: 20px; height: 20px; }
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.action { min-height: 96px; border: 1px solid var(--pline); border-radius: 20px; background: var(--card); color: var(--ink); padding: 12px 8px; font-weight: 700; display: grid; justify-items: center; gap: 6px; }
+.action svg { width: 40px; height: 40px; }
+.action:hover { border-color: var(--acc2); }
+.action.lit { animation: lit 2.4s ease-out; }
+@keyframes lit { 0% { box-shadow: 0 0 34px var(--acc-soft); border-color: var(--acc); } 100% { box-shadow: none; } }
+.primary { width: 100%; min-height: 56px; border: 1px solid rgba(247,223,174,.55); border-radius: 999px; background: var(--gold-sheen), var(--gold-btn); color: #24180B; padding: 12px 18px; font-weight: 700; }
+.nebo .primary { background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0) 50%), linear-gradient(90deg, #8FA6CC, #B9C9E3); border-color: rgba(220,230,246,.6); color: #0B1424; }
+.mjesec .primary { background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0) 50%), linear-gradient(90deg, #CDBF9A, #EDE3C8); border-color: rgba(250,244,226,.6); color: #1D1726; }
+.secondary { min-height: 50px; border: 1px solid var(--acc2); border-radius: 999px; background: transparent; color: var(--acc); padding: 9px 16px; font-weight: 700; }
+.soft-card { background: var(--card); border: 1px solid var(--pline); padding: 16px; border-radius: 20px; margin: 12px 0; }
+.story { border-left: 3px solid var(--acc2); padding: 4px 0 4px 14px; margin: 16px 0; }
+.story small { display: block; color: var(--muted); margin-top: 6px; font-size: 15px; }
+.family-links { display: flex; flex-direction: column; gap: 10px; }
+.family-link { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border: 1px solid var(--pline); border-radius: 16px; text-decoration: none; color: var(--ink); background: var(--card); font-weight: 700; min-height: 60px; }
+.family-link span { font-size: 15px; color: var(--muted); font-weight: 400; text-align: right; }
+.family-link:hover { border-color: var(--acc2); }
+.loc-card { display: flex; gap: 14px; align-items: flex-start; }
+.loc-card svg { width: 34px; height: 34px; flex: none; color: var(--acc); }
+.qr-row { display: flex; gap: 16px; align-items: center; }
+.qr { width: 104px; height: 104px; flex: none; border: 7px solid #F4EFE4; background-color: #F4EFE4; background-image: repeating-conic-gradient(#0B1018 0 25%, #F4EFE4 0 50%); background-size: 14px 14px; position: relative; border-radius: 6px; }
+.qr::after { content: ""; position: absolute; inset: 32px; background: #F4EFE4 url("img/logo-znak.svg") center / 80% no-repeat; border: 4px solid #0B1018; }
+.small-label { font-size: 15px; color: var(--muted); }
+.form-field { display: block; margin: 12px 0; font-weight: 700; font-size: 16px; color: var(--muted); }
+.form-field input, .form-field textarea { display: block; width: 100%; margin-top: 6px; border: 1px solid var(--line-strong); border-radius: 16px; background: rgba(10,13,18,.82); color: var(--ink); padding: 12px 14px; min-height: 54px; font-size: 18px; }
+.form-field textarea { min-height: 110px; resize: vertical; }
+.notice { font-size: 15px; color: var(--muted); margin-top: 10px; }
+.toast { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--acc-soft); border: 1px solid var(--pline); color: var(--ink); display: none; }
+.phone-footer { padding: 16px 22px; border-top: 1px solid var(--pline); font-size: 15px; color: var(--muted); text-align: center; }
+.phone-footer em { display: block; font: 400 30px/1 var(--script); color: var(--acc); font-style: normal; margin-bottom: 4px; }
+
+.overview { padding-bottom: 60px; }
+.overview > h2 { font-size: clamp(28px, 4vw, 38px); color: var(--gold-50); }
+.design-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 860px) { .design-grid { grid-template-columns: repeat(3, 1fr); } }
+.design-card { border: 1px solid var(--line); background: rgba(10,15,21,.8); border-radius: 22px; padding: 16px; }
+.design-card h2 { font-size: 28px; color: var(--gold-50); margin: 2px 2px 4px; }
+.design-card .subtitle { color: var(--muted); font-size: 16px; margin: 0 2px 14px; }
+.mini-screen { border-radius: 18px; border: 1px solid var(--pline); overflow: hidden; background: var(--pbg); margin-top: 10px; }
+.mini-head { padding: 10px 14px; font: 600 16px var(--brand); letter-spacing: .25em; color: var(--acc); border-bottom: 1px solid var(--pline); }
+.mini-photo { height: 96px; background: var(--scene) var(--scenepos) / cover; }
+.mini-body { padding: 12px 14px 14px; }
+.mini-body h3 { font-size: 22px; margin: 0 0 2px; }
+.mini-body p { font-size: 15px; color: var(--muted); margin: 0; }
+.mini-button { display: block; border-radius: 999px; padding: 9px 12px; margin-top: 12px; text-align: center; border: 1px solid var(--acc2); color: var(--acc); font-weight: 700; font-size: 15px; }
+footer.note { max-width: 1180px; margin: 0 auto; padding: 0 18px 40px; color: var(--muted); font-size: 15px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gGold" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#F4DBA6"/><stop offset=".55" stop-color="#D9AE6B"/><stop offset="1" stop-color="#A8773D"/></linearGradient>
+    <radialGradient id="gFlame" cx=".5" cy=".72" r=".62"><stop offset="0" stop-color="#FFF8EC"/><stop offset=".45" stop-color="#F9DB98"/><stop offset="1" stop-color="#E39A3B"/></radialGradient>
+    <radialGradient id="gHalo"><stop offset="0" stop-color="#F2B866" stop-opacity=".6"/><stop offset="1" stop-color="#F2B866" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gWax" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4DC"/><stop offset="1" stop-color="#E4C08A"/></linearGradient>
+    <radialGradient id="gPetal" cx=".5" cy=".25" r=".85"><stop offset="0" stop-color="#FFFCF5"/><stop offset="1" stop-color="#E6D2AE"/></radialGradient>
+    <symbol id="iCandle" viewBox="0 0 32 32"><circle cx="16" cy="8" r="8" fill="url(#gHalo)"/><path d="M16 2.2c-2.7 3.7-3.1 6 0 7.8 3.1-1.8 2.7-4.1 0-7.8Z" fill="url(#gFlame)"/><path d="M16 9.6v2.3" stroke="#3A2A18" stroke-width=".9"/><rect x="9.6" y="12.2" width="12.8" height="16.6" rx="2" fill="url(#gWax)" opacity=".95"/><rect x="8.6" y="11.2" width="14.8" height="18.6" rx="2.6" fill="none" stroke="url(#gGold)" stroke-width="1.1"/><path d="M16 20.6c-1.1-1.5-2-2.1-2.9-2.1a2.1 2.1 0 0 0 0 4.2c.9 0 1.8-.6 2.9-2.1Zm0 0c1.1 1.5 2 2.1 2.9 2.1a2.1 2.1 0 0 0 0-4.2c-.9 0-1.8.6-2.9 2.1Z" fill="none" stroke="#B98A4A" stroke-width=".8"/></symbol>
+    <symbol id="iFlower" viewBox="0 0 32 32"><path d="M5.5 29c3.5-6.4 7.6-10.4 13-13" fill="none" stroke="url(#gGold)" stroke-width="1.2" stroke-linecap="round"/><path d="M9.6 23.6c-3.4.6-5.6-1.2-6.1-3.6 2.8-.8 5 .3 6.1 3.6Z" fill="#7C8656"/><path d="M12.4 20.8c.2-3.2 2.2-4.8 4.4-4.9-.1 2.6-1.6 4.4-4.4 4.9Z" fill="#6A7449"/><g fill="url(#gPetal)" stroke="#C9A469" stroke-width=".45"><ellipse cx="18.5" cy="7.4" rx="3.3" ry="5.2"/><ellipse cx="18.5" cy="7.4" rx="3.3" ry="5.2" transform="rotate(72 18.5 13)"/><ellipse cx="18.5" cy="7.4" rx="3.3" ry="5.2" transform="rotate(144 18.5 13)"/><ellipse cx="18.5" cy="7.4" rx="3.3" ry="5.2" transform="rotate(216 18.5 13)"/><ellipse cx="18.5" cy="7.4" rx="3.3" ry="5.2" transform="rotate(288 18.5 13)"/></g><circle cx="18.5" cy="13" r="2.6" fill="#E2B25E"/><circle cx="18.5" cy="13" r="1.2" fill="#C98F45"/></symbol>
+    <symbol id="iHeart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9-9.3C2 7.9 4.2 5 7.2 5c2 0 3.4 1.1 4.8 2.8C13.4 6.1 14.8 5 16.8 5c3 0 5.2 2.9 4.2 6.2-1.5 4.7-9 9.3-9 9.3Z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <a class="brand" href="index.html"><img src="img/logo-znak.svg" alt=""><b>ETERNIA</b></a>
+  <nav aria-label="Primjeri">
+    <a href="index.html">Aplikacija</a>
+    <a href="naslovnice.html">Naslovnice</a>
+    <a href="smjerovi.html" aria-current="page">Smjerovi MS i GS</a>
+    <a href="okviri.html">Okviri</a>
+  </nav>
+</header>
+
+<section class="controls">
+  <h1>Tri noćna smjera. Jedno dostojanstvo.</h1>
+  <p>Usporedite tri smjera za <strong>MS (memorijalnu stranicu)</strong> i <strong>GS (stranicu grobnog mjesta)</strong>. Odaberite smjer i pregledajte oba povezana zaslona. Osobe i grobno mjesto su izmišljeni.</p>
+  <div class="switches" role="group" aria-label="Odabir smjera">
+    <button type="button" data-direction="svijeca" aria-pressed="true" style="--dot:#E6C794"><i></i>1. Svijeća</button>
+    <button type="button" data-direction="nebo" aria-pressed="false" style="--dot:#C9D6EA"><i></i>2. Zvjezdano nebo</button>
+    <button type="button" data-direction="mjesec" aria-pressed="false" style="--dot:#EDE3C8"><i></i>3. Mjesečina</button>
+  </div>
+  <div class="direction-note" id="direction-note" aria-live="polite"></div>
+  <div class="view-switch" role="group" aria-label="Odabir stranice">
+    <button type="button" data-view="ms" aria-pressed="true">MS · Memorijalna stranica</button>
+    <button type="button" data-view="gs" aria-pressed="false">GS · Grobno mjesto</button>
+  </div>
+</section>
+
+<main class="stage">
+  <div class="prototype-wrap">
+    <section class="phone" id="phone-ms" aria-label="Prototip memorijalne stranice">
+      <div class="phone-header"><img src="img/logo-znak.svg" alt=""><span class="wordmark">ETERNIA</span><span class="eyebrow">Memorijalna stranica</span></div>
+      <div class="hero" role="img" aria-label="Noćna scena"><span></span></div>
+      <div class="page-content">
+        <div class="person"><div class="portrait" aria-hidden="true">M</div><h2>Marija Kovač</h2><div class="dates">* 1942. &nbsp;·&nbsp; † 2021.</div><p class="quote">„Voljena majka, baka i prijateljica.“</p></div>
+        <div class="rule" aria-hidden="true"><svg><use href="#iHeart"/></svg></div>
+        <p>Sačuvali smo ovo mjesto za priče, fotografije i trenutke koji nas i dalje povezuju.</p>
+        <div class="action-grid">
+          <button class="action" type="button" data-gift="Svijeća"><svg><use href="#iCandle"/></svg>Zapali svijeću</button>
+          <button class="action" type="button" data-gift="Cvijet"><svg><use href="#iFlower"/></svg>Ostavi cvijet</button>
+        </div>
+        <div class="toast" aria-live="polite"></div>
+        <div class="rule" aria-hidden="true"><svg><use href="#iHeart"/></svg></div>
+        <h3>Zid sjećanja</h3>
+        <div class="story">„Uvijek je znala okupiti sve oko stola. Njezina toplina ostaje s nama.”<small>Ana, kći · 12. svibnja 2024.</small></div>
+        <div class="story">„Naučila me da male stvari čine život velikim.”<small>Ivan, unuk · 3. lipnja 2023.</small></div>
+        <button class="primary" type="button" data-open="memory-form">Podijeli uspomenu</button>
+        <form class="soft-card" data-form="memory-form" hidden>
+          <h3>Dodaj uspomenu</h3>
+          <label class="form-field">Vaše ime<input name="name" autocomplete="name" placeholder="Kako da vas potpišemo?" required></label>
+          <label class="form-field">Uspomena<textarea name="story" placeholder="Podijelite priču ili sjećanje…" required></textarea></label>
+          <button class="primary" type="submit">Prikaži uspomenu</button>
+          <p class="notice">Demo prikaz: sadržaj se dodaje samo u ovaj preglednik.</p>
+        </form>
+        <div class="rule" aria-hidden="true"><svg><use href="#iHeart"/></svg></div>
+        <h3>Obiteljske uspomene</h3>
+        <div class="family-links">
+          <a class="family-link" href="#ivan" data-related="gs">Ivan Kovač <span>unuk · pogledaj obitelj</span></a>
+          <a class="family-link" href="#gs" data-related="gs">Grobno mjesto obitelji Kovač <span>podaci i lokacija →</span></a>
+        </div>
+      </div>
+      <footer class="phone-footer"><em>Jer uspomene povezuju.</em>S poštovanjem čuvamo uspomenu na Mariju.</footer>
+    </section>
+
+    <section class="phone" id="phone-gs" aria-label="Prototip stranice grobnog mjesta" hidden>
+      <div class="phone-header"><img src="img/logo-znak.svg" alt=""><span class="wordmark">ETERNIA</span><span class="eyebrow">Grobno mjesto</span></div>
+      <div class="hero" role="img" aria-label="Noćna scena"><span>Obitelj Kovač</span></div>
+      <div class="page-content">
+        <h2 style="margin-top:12px">Grobno mjesto obitelji Kovač</h2>
+        <p class="dates">Gradsko groblje · Osijek</p>
+        <div class="soft-card loc-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.4"/></svg><div><strong>Lokacija grobnog mjesta</strong><p>Polje 12 · Red 4 · Grob 18</p><button type="button" class="secondary" data-map>Prikaži upute</button><p class="notice" data-map-note hidden>Primjer lokacije. U stvarnoj usluzi ovdje se prikazuju potvrđene upute.</p></div></div>
+        <div class="action-grid">
+          <button class="action" type="button" data-gift="Svijeća"><svg><use href="#iCandle"/></svg>Zapali svijeću</button>
+          <button class="action" type="button" data-gift="Cvijet"><svg><use href="#iFlower"/></svg>Ostavi cvijet</button>
+        </div>
+        <div class="toast" aria-live="polite"></div>
+        <div class="rule" aria-hidden="true"><svg><use href="#iHeart"/></svg></div>
+        <h3>Ovdje počivaju</h3>
+        <div class="family-links">
+          <a class="family-link" href="#marija" data-related="ms">Marija Kovač <span>1942. – 2021. →</span></a>
+          <a class="family-link" href="#ante" data-related="ms">Ante Kovač <span>1938. – 2016. →</span></a>
+        </div>
+        <div class="rule" aria-hidden="true"><svg><use href="#iHeart"/></svg></div>
+        <h3>Otvorite ovo mjesto sjećanja</h3>
+        <div class="soft-card qr-row"><div class="qr" role="img" aria-label="Ilustracija QR koda, nije skenabilna"></div><div><strong>QR poveznica</strong><p class="small-label">Skeniranjem koda na spomeniku otvara se ova stranica grobnog mjesta, bez prijave.</p></div></div>
+        <button class="primary" type="button" data-related="ms">Otvori memorijal Marije</button>
+        <p class="notice">QR kod je u ovom prototipu ilustrativan, nije skenabilan.</p>
+      </div>
+      <footer class="phone-footer"><em>Jer uspomene povezuju.</em>Mjesto susreta s obiteljskim uspomenama.</footer>
+    </section>
+  </div>
+</main>
+
+<section class="overview">
+  <h2>Brzi pregled svih triju smjerova</h2>
+  <p>Svaki smjer koristi isti MVP sadržaj; razlikuju se naglasna boja, scena i dojam stranice.</p>
+  <div class="design-grid" id="design-grid"></div>
+</section>
+<footer class="note">Dizajnerski prototip, a ne produkcijska usluga. Sve su osobe i lokacije izmišljene. Svijeća, cvijet i dodavanje uspomene prikazuju samo lokalnu demonstraciju; nema prijave, stvarnog objavljivanja ni funkcionalnog QR koda.</footer>
+
+<script>
+(() => {
+  const directions = {
+    svijeca: { name: "Svijeća", sub: "Toplo zlato na noćnoj plavoj", desc: "Svijeća uz jezero iz dizajn paketa. Topla, intimna i najbliža naslovnici. Zlatni naglasci i gumbi." },
+    nebo: { name: "Zvjezdano nebo", sub: "Srebrno-plavo, prostrano", desc: "Mliječni put i zalazak nad jezerom. Hladniji srebrno-plavi naglasci daju miran, svečan i prostran dojam." },
+    mjesec: { name: "Mjesečina", sub: "Bjelokost i ljubičasta noć", desc: "Pun mjesec, maslina i lampion. Najtiši smjer: svijetla bjelokost na ljubičasto-tamnoj podlozi." },
+  };
+  let direction = "svijeca", view = "ms";
+  const note = document.getElementById("direction-note");
+  document.getElementById("design-grid").innerHTML = Object.entries(directions).map(([k, d], i) => `
+    <article class="design-card"><h2>${i + 1}. ${d.name}</h2><p class="subtitle">${d.sub}</p>
+      <div class="mini-screen phone ${k}" style="border-radius:18px;box-shadow:none;max-width:none"><div class="mini-head">ETERNIA · Sjećanje</div><div class="mini-photo"></div><div class="mini-body"><h3>Marija Kovač</h3><p>1942. – 2021.</p><span class="mini-button">Zapali svijeću</span></div></div>
+      <div class="mini-screen phone ${k}" style="border-radius:18px;box-shadow:none;max-width:none"><div class="mini-head">ETERNIA · Obitelj</div><div class="mini-body"><h3>Grobno mjesto Kovač</h3><p>Gradsko groblje · Osijek</p><span class="mini-button">Pogledaj memorijale</span></div></div>
+    </article>`).join("");
+  function apply() {
+    document.querySelectorAll(".stage .phone").forEach(el => { el.classList.remove("svijeca", "nebo", "mjesec"); el.classList.add(direction); });
+    document.querySelectorAll("[data-direction]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.direction === direction)));
+    document.querySelectorAll("[data-view]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+    document.getElementById("phone-ms").hidden = view !== "ms";
+    document.getElementById("phone-gs").hidden = view !== "gs";
+    const d = directions[direction];
+    note.innerHTML = `<strong>${d.name}</strong><span>${d.desc}</span>`;
+  }
+  document.querySelectorAll("[data-direction]").forEach(b => b.addEventListener("click", () => { direction = b.dataset.direction; apply(); }));
+  document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => { view = b.dataset.view; apply(); }));
+  document.querySelectorAll("[data-gift]").forEach(b => b.addEventListener("click", () => {
+    const toast = b.closest(".phone").querySelector(".toast");
+    toast.textContent = b.dataset.gift === "Svijeća" ? "Svijeća je zapaljena u ovom prikazu. Hvala što čuvate uspomenu." : "Cvijet je ostavljen u ovom prikazu. Hvala što čuvate uspomenu.";
+    toast.style.display = "block";
+    b.classList.remove("lit"); void b.offsetWidth; b.classList.add("lit");
+  }));
+  document.querySelectorAll("[data-open]").forEach(b => b.addEventListener("click", () => {
+    const form = document.querySelector('[data-form="' + b.dataset.open + '"]'); form.hidden = !form.hidden;
+    if (!form.hidden) form.querySelector("input").focus();
+  }));
+  document.querySelectorAll("[data-form]").forEach(form => form.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = form.elements.name.value.trim(), story = form.elements.story.value.trim();
+    if (!name || !story) return;
+    const article = document.createElement("div"); article.className = "story";
+    const quote = document.createElement("span"); quote.textContent = "„" + story + "”";
+    const small = document.createElement("small"); small.textContent = name + " · upravo sada (demo)";
+    article.append(quote, small); form.parentElement.insertBefore(article, form.previousElementSibling);
+    form.reset(); form.hidden = true;
+  }));
+  document.querySelectorAll("[data-map]").forEach(b => b.addEventListener("click", () => {
+    const n = b.parentElement.querySelector("[data-map-note]"); n.hidden = !n.hidden;
+  }));
+  document.querySelectorAll("[data-related]").forEach(el => el.addEventListener("click", e => {
+    e.preventDefault(); view = el.dataset.related; apply();
+    document.getElementById("phone-" + view).scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
+  apply();
+})();
+</script>
+</body>
+</html>
